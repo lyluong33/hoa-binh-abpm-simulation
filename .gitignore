@@ -1,0 +1,13 @@
+# build products
+build/
+**/build/
+*.o
+*.a
+__pycache__/
+*.pyc
+.pytest_cache/
+# large or regenerated run folders
+runs/
+work/
+# OS noise
+.DS_Store
