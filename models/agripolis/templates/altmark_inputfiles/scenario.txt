@@ -1,0 +1,18 @@
+Scenario:	RentVar	
+Description: baseline		
+		
+policy_file: policy_settings.txt		
+		
+[Options]		
+Teiler	10	
+
+Rent_variation	true
+beta_min	.30
+beta_max	.70
+
+#ManagerCoeffDistribution	Normal	
+#ManagerDemographics	true
+AGE_DEPENDENT true
+		
+[Globals]		
+ManagerDev		0.1
