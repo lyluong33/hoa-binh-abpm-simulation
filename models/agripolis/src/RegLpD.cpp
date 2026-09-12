@@ -1468,7 +1468,9 @@ RegLpInfo::restore() {
     obj_backup=tmp;
 }
 
-#ifndef FRONTMIPISINSTALLED
+// The legacy lpx_* API was removed in GLPK 4.52; LpGlpk() is unused and is
+// compiled only when explicitly requested.
+#ifdef AGP_LEGACY_LPX_API
 
 double
 RegLpInfo::LpGlpk(RegProductList* PList, vector<int >& ninv, bool prod, int maxofffarmlu ) {

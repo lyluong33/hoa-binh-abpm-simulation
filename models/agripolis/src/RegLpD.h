@@ -199,7 +199,9 @@ public:
 
 #ifdef GNU_SOLVER //ndef FRONTMIPISINSTALLED
     /** Lp optimization method using glpk library */
+#ifdef AGP_LEGACY_LPX_API
     double  LpGlpk(RegProductList* PList,vector<int >& ninv, bool prod, int famlabour);
+#endif
     void glp_solve();
 #endif
     /** \begin{itemize}
