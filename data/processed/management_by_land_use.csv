@@ -1,0 +1,6 @@
+land_use,mowing_intensity_mean,mowing_intensity_median,mowing_frequency_mean,mowing_frequency_median,share_not_cut,n_plots,intensity_fraction
+Annual cropland,5.0,5.0,5.333333333333333,4.0,0.0,3,1.0
+Home garden,3.5,3.5,6.5,6.5,0.0,2,0.7
+Perrenial cropland,3.6,4.0,7.6,5.0,0.0,5,0.8
+Production forest,2.526315789473684,2.0,6.447368421052632,1.0,0.10526315789473684,19,0.4
+Protection forest,1.4545454545454546,1.0,4.045454545454546,0.0,0.6363636363636364,11,0.2

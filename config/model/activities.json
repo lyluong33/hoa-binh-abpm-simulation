@@ -1,0 +1,79 @@
+{
+  "_description": "The nine land-use activities shared by AgriPoliS (LP columns) and ALMaSS (vegetation types / management plans). Management schedules follow the thesis mowing survey (intensity 1-5 -> 0.2-1.0, frequency per year) aggregated by land use, plus field knowledge on maize clearance/burning and acacia clear-felling. canopy_cover: median Avg_canopy of the thesis vegetation plots by land use (le-duc-trung reference data).",
+  "activities": {
+    "MAIZE_INT": {
+      "land_type": "FARMLAND", "almass_tov": "HBMaizeIntensive", "thesis_land_use": "Annual cropland",
+      "canopy_cover": 0.0, "stewardship": false,
+      "events": [
+        {"action": "burn",      "day_of_year": 60,  "window_days": 20, "intensity": 1.0},
+        {"action": "herbicide", "day_of_year": 85,  "window_days": 10, "intensity": 1.0},
+        {"action": "sow",       "day_of_year": 100, "window_days": 20, "intensity": 1.0},
+        {"action": "herbicide", "day_of_year": 140, "window_days": 10, "intensity": 1.0},
+        {"action": "cut",       "day_of_year": 170, "window_days": 10, "intensity": 1.0},
+        {"action": "harvest",   "day_of_year": 232, "window_days": 20, "intensity": 1.0}
+      ]
+    },
+    "MAIZE_LOW": {
+      "land_type": "FARMLAND", "almass_tov": "HBMaizeLowInput", "thesis_land_use": "Annual cropland",
+      "canopy_cover": 0.0, "stewardship": true,
+      "events": [
+        {"action": "cut",     "day_of_year": 60,  "window_days": 20, "intensity": 0.8},
+        {"action": "sow",     "day_of_year": 100, "window_days": 20, "intensity": 0.6},
+        {"action": "cut",     "day_of_year": 135, "window_days": 10, "intensity": 0.8},
+        {"action": "cut",     "day_of_year": 170, "window_days": 10, "intensity": 0.8},
+        {"action": "harvest", "day_of_year": 237, "window_days": 20, "intensity": 0.8}
+      ]
+    },
+    "ORCHARD": {
+      "land_type": "FARMLAND", "almass_tov": "HBOrchard", "thesis_land_use": "Perrenial cropland",
+      "canopy_cover": 0.79, "stewardship": false,
+      "events": [
+        {"action": "cut", "day_of_year": 45,  "window_days": 10, "intensity": 0.8},
+        {"action": "cut", "day_of_year": 110, "window_days": 10, "intensity": 0.8},
+        {"action": "cut", "day_of_year": 170, "window_days": 10, "intensity": 0.8},
+        {"action": "cut", "day_of_year": 230, "window_days": 10, "intensity": 0.8},
+        {"action": "cut", "day_of_year": 290, "window_days": 10, "intensity": 0.8}
+      ]
+    },
+    "FALLOW": {
+      "land_type": "FARMLAND", "almass_tov": "HBFallow", "thesis_land_use": "No use",
+      "canopy_cover": 0.40, "stewardship": true,
+      "events": []
+    },
+    "ACACIA": {
+      "land_type": "PRODUCTION_FOREST", "almass_tov": "HBAcacia", "thesis_land_use": "Production forest",
+      "canopy_cover": 0.69, "stewardship": false,
+      "events": [
+        {"action": "cut",       "day_of_year": 110, "window_days": 15, "intensity": 0.6},
+        {"action": "cut",       "day_of_year": 250, "window_days": 15, "intensity": 0.6},
+        {"action": "clearfell", "day_of_year": 300, "window_days": 20, "intensity": 1.0, "probability": 0.1667}
+      ]
+    },
+    "NATIVE_MIX": {
+      "land_type": "PRODUCTION_FOREST", "almass_tov": "HBNativeMix", "thesis_land_use": "Production forest",
+      "canopy_cover": 0.69, "stewardship": true,
+      "events": [
+        {"action": "cut", "day_of_year": 220, "window_days": 20, "intensity": 0.4}
+      ]
+    },
+    "REGEN": {
+      "land_type": "PRODUCTION_FOREST", "almass_tov": "HBRegeneration", "thesis_land_use": "No use",
+      "canopy_cover": 0.55, "stewardship": true,
+      "events": []
+    },
+    "PROTECT_STRICT": {
+      "land_type": "PROTECTION_FOREST", "almass_tov": "HBProtectStrict", "thesis_land_use": "Protection forest",
+      "canopy_cover": 0.79, "stewardship": true,
+      "events": []
+    },
+    "PROTECT_USE": {
+      "land_type": "PROTECTION_FOREST", "almass_tov": "HBProtectUse", "thesis_land_use": "Protection forest",
+      "canopy_cover": 0.79, "stewardship": false,
+      "events": [
+        {"action": "cut", "day_of_year": 90,  "window_days": 30, "intensity": 0.3},
+        {"action": "cut", "day_of_year": 200, "window_days": 30, "intensity": 0.3},
+        {"action": "cut", "day_of_year": 300, "window_days": 30, "intensity": 0.3}
+      ]
+    }
+  }
+}
