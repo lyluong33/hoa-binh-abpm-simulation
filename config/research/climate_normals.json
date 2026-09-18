@@ -1,0 +1,43 @@
+{
+  "station": "Mai Chau (former Mai Chau district town, Hoa Binh province; now xa Mai Chau, Phu Tho province)",
+  "source": "Vietnam Institute for Building Science and Technology, QCVN 02:2022/BXD (Circular 02/2022/TT-BXD, 26/09/2022), climate data supplied by IMHEN; values as transcribed in the climate box of en.wikipedia 'Mai Chau district' (https://en.wikipedia.org/wiki/Mai_Ch%C3%A2u_district). QCVN PDF: https://datafiles.chinhphu.vn/cpp/files/vbpq/2022/10/02-bxd.pdf",
+  "period": "QCVN 02:2022/BXD station normals; station record through c. 2017-2020; exact averaging period not stated (do not label as 1961-1990 or 1991-2020)",
+  "confidence": "approximate (read on the Wikipedia page, which cites QCVN 02:2022; the QCVN Annex A tables themselves could not be extracted)",
+  "units": {"t_mean": "degC", "t_max": "degC (mean daily maximum)", "t_min": "degC (mean daily minimum)", "rain_mm": "mm/month", "rel_humidity": "% (monthly mean)", "rain_days": "days/month", "sunshine_hours": "h/month"},
+  "monthly": {
+    "t_mean":        [18.4, 20.2, 22.7, 25.5, 26.5, 26.6, 26.4, 25.9, 25.1, 23.6, 21.4, 19.0],
+    "t_max":         [24.6, 26.7, 29.5, 32.2, 32.6, 31.7, 31.4, 30.7, 30.1, 28.8, 26.8, 24.6],
+    "t_min":         [15.7, 17.0, 19.1, 21.5, 22.7, 23.1, 23.0, 22.8, 22.1, 20.6, 18.6, 16.4],
+    "rain_mm":       [14.5, 12.8, 29.0, 94.8, 194.4, 250.9, 316.2, 337.5, 288.9, 171.5, 36.4, 11.1],
+    "rel_humidity":  [79.9, 79.0, 79.2, 79.5, 80.3, 81.6, 83.3, 85.6, 85.2, 83.4, 81.3, 79.6],
+    "rain_days":     [3.2, 3.0, 5.4, 11.0, 16.4, 17.2, 18.8, 18.6, 14.2, 10.9, 5.5, 2.8],
+    "sunshine_hours":[84.8, 78.6, 98.7, 129.5, 170.2, 148.3, 153.4, 144.4, 140.7, 124.8, 115.0, 109.6]
+  },
+  "annual": {"t_mean": 23.4, "t_max": 29.1, "t_min": 20.2, "rain_mm_stated": 1756, "rain_mm_sum_of_months": 1758.0, "rain_days": 127.1, "rel_humidity": 81.5, "sunshine_hours_stated": 1494, "sunshine_hours_sum_of_months": 1498.0},
+  "quality_notes": [
+    "Record lows in the source box for Jan-Mar, Jun, Jul and Dec are identical to the Hoa Binh station and May is blank (probable copy error); record extremes are therefore NOT included here.",
+    "January (max+min)/2 = 20.2 degC vs mean 18.4 degC: larger gap than other months; treat January t_max/t_min with caution.",
+    "Monthly rain sums to 1758.0 mm vs stated 1756; sunshine sums to 1498.0 h vs stated 1494."
+  ],
+  "station_assignment": {
+    "Mai Hich (now xa Bao La) and Mai Ha (now xa Mai Ha)": "use this Mai Chau station (assumption)",
+    "Tien Phong and Cao Son (former Da Bac district, NOT Mai Chau)": "no Da Bac station series found; use the Hoa Binh station below (assumption). Tien Phong lies at ~100 m by the Hoa Binh reservoir; Cao Son is higher: apply lapse-rate correction of about -0.55 degC per 100 m (assumption)."
+  },
+  "alternate_station": {
+    "station": "Hoa Binh (former Hoa Binh city)",
+    "source": "QCVN 02:2022/BXD as transcribed in en.wikipedia 'Hoa Binh (city)' climate box, https://en.wikipedia.org/wiki/H%C3%B2a_B%C3%ACnh_(city)",
+    "period": "not stated (same QCVN 02:2022 source chain)",
+    "confidence": "approximate",
+    "monthly": {
+      "t_mean":        [16.5, 18.0, 20.9, 24.8, 27.5, 28.7, 28.6, 28.1, 27.0, 24.5, 21.1, 17.8],
+      "t_max":         [20.6, 21.9, 24.9, 29.4, 32.9, 33.9, 33.6, 32.8, 31.7, 29.2, 26.1, 22.6],
+      "t_min":         [14.0, 15.6, 18.4, 21.8, 24.0, 25.4, 25.5, 25.2, 24.1, 21.4, 18.1, 14.8],
+      "rain_mm":       [20.5, 14.9, 35.1, 95.5, 244.0, 269.8, 310.6, 325.0, 285.5, 183.9, 55.0, 17.2],
+      "rel_humidity":  [83.4, 83.7, 84.1, 83.7, 82.1, 82.2, 83.5, 85.0, 84.9, 84.1, 82.6, 81.8],
+      "rain_days":     [8.6, 9.2, 11.5, 14.0, 18.1, 18.2, 18.9, 18.4, 14.2, 11.5, 7.4, 5.8],
+      "sunshine_hours":[87.2, 69.7, 73.4, 121.7, 183.4, 170.3, 181.4, 174.3, 172.6, 158.3, 140.1, 122.3]
+    },
+    "annual": {"t_mean": 23.6, "rain_mm": 1857.1, "rain_days": 155.9, "sunshine_hours": 1654.7}
+  },
+  "context": "Thesis (Luong 2025, citing Bui et al. 2012) gives provincial Jan mean 14.9 degC, Jul 26.7 degC and 84-90% of rain in May-Oct; QCVN 02:2022 s.2.1.5.2 places western Hoa Binh at the southern limit of the Northwest (Tay Bac) climate: drier, warmer winters than the Red River Delta side."
+}

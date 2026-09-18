@@ -1,0 +1,175 @@
+{
+  "_description": "Per-hectare economics for the 9 fixed land-use activities of the Mai Chau / Da Bac ABM (2025-2042, annual step). Market values only: PFES, protection contracts and planting support are NOT included here; they live in scenarios.json. Prices 2024-2025 VND.",
+  "vnd_per_eur": 29424,
+  "rural_wage_vnd_per_day": 200000,
+  "exchange_rate": {
+    "vnd_per_eur": 29424,
+    "year": 2025,
+    "source": "exchange-rates.org, EUR/VND annual average 2025, https://www.exchange-rates.org/exchange-rate-history/eur-vnd-2025",
+    "confidence": "verified",
+    "alternatives": {"2024_annual_average": 27112, "2023_annual_average": 25792, "implied_by_thesis_143500_VND_eq_4.71_EUR": 30467}
+  },
+  "rural_wage": {
+    "rural_wage_vnd_per_day": 200000,
+    "range": [150000, 250000],
+    "year": 2025,
+    "source": "Assumption for hired farm labour in Mai Chau/Da Bac. Anchors: legal floor Region IV (all of former Hoa Binh except HB city and Luong Son) 3,450,000 VND/month = 16,600 VND/h = 132,800 VND per 8-h day (Decree 74/2024/ND-CP, https://xaydungchinhsach.chinhphu.vn/toan-van-nghi-dinh-74-2024-nd-cp-quy-dinh-muc-luong-toi-thieu-vung-119240701122135822.htm, verified); Region IV from 1/1/2026 3,700,000 VND/month, 17,800 VND/h (Decree 293/2025/ND-CP, approximate); hired forestry labour Yen Chau (Son La) 7.65 USD/day ~181,000 VND in 2022 (Kyaw et al. 2024 Forestist 74(3), verified); rural employed-worker income 6.7 M VND/month 2024 (NSO Q4/2024 press release, verified).",
+    "confidence": "assumption"
+  },
+  "annualisation": {
+    "method": "Equal annuity (capital-recovery factor) at 8%/yr: A = PV(flows) * r / (1 - (1+r)^-n), establishment at t=0, all other flows at the end of years 1..n; n = rotation or economic life. Output, variable cost and labour are annualised separately; establishment cost is reported one-off (establishment_cost_vnd_per_ha) and as an annuity (establishment_cost_annualised_vnd_per_ha_yr).",
+    "discount_rate": 0.08,
+    "crf": {"n6": 0.21632, "n20": 0.10185, "n25": 0.09368},
+    "rationale": "8% sits between the 6.5-9% used by Phuong et al. 2016 (Da Bac) and the 8.5% used by Tuan 2013 (Luong Son acacia); commercial smallholder credit in VN is ~8-10%/yr. Real-rate LEVs (3%) in Kyaw et al. 2024 would favour long rotations much more.",
+    "script": "not part of the repo; the formula and the CRF values are in docs/research/scenario.md"
+  },
+  "activities": {
+    "MAIZE_INT": {
+      "land_type": "FARMLAND",
+      "output_value_vnd_per_ha_yr": 28000000,
+      "variable_cost_vnd_per_ha_yr": 15000000,
+      "labour_days_per_ha_yr": 110,
+      "establishment_cost_vnd_per_ha": 0,
+      "rotation_years": 1,
+      "years_to_first_income": 0,
+      "notes": "Maize (or cassava) monocrop on slopes, complete clearance, burning, herbicide; one main crop per year. Gross = 4.5 t/ha x 6,200 VND/kg dry grain (Hoa Binh provincial mean 4.79 t/ha in 2024 includes lowland; remote sloping plots lower; farm-gate 6,000-7,000 VND/kg 2024-25). Cassava alternative: 15.7 t/ha (HB 2024) x 2,000-2,900 VND/kg = 31-45 M gross but price crashed to 1,500-2,000 in Mar 2025. Variable cost: Da Bac 2013 purchased inputs (seed 95.9 + fertiliser 399.6 + pesticide 73.4 USD/ha = 569 USD, ~11.9 M VND) inflated x1.25; Son La 2016 ~20 M incl. seed and fertiliser. Net before own labour ~13 M VND/ha, ~118,000 VND per labour day (below the 200,000 wage, consistent with low returns reported for NW uplands).",
+      "sources": [
+        "NSO PX-Web V06.25/V06.26 maize area and yield, Hoa Binh 2020-2025p (verified)",
+        "Phuong et al. 2016, Int. J. Commons 10(2), Table 2 and 5, https://thecommonsjournal.org/articles/10.18352/ijc.620 (verified)",
+        "Bao Son La 2016 'Giai phap cho cay ngo phat trien ben vung' https://baosonla.vn/vi/bai-viet/giai-phap-cho-cay-ngo-phat-trien-ben-vung-5475 (verified, old)",
+        "winmix.vn Dec 2024 maize price https://winmix.vn/cap-nhat-gia-ngo-hat-thang-12-2024-tai-viet-nam/ (approximate)",
+        "CafeF 31/03/2025 cassava price crash https://cafef.vn/gia-san-lao-doc-manh-nhat-10-nam-qua-188250331110216602.chn (verified)",
+        "ICRAF AFLI diagnosis of NW farming systems (labour 100k VND/day; input 10.96-22.3 M VND/ha) https://www.worldagroforestry.org/sites/default/files/AFLI%20Diagnosis%20of%20farming%20systems%20in%20Northwestern%20Vietnam.pdf (verified)"
+      ],
+      "confidence": "approximate"
+    },
+    "MAIZE_LOW": {
+      "land_type": "FARMLAND",
+      "output_value_vnd_per_ha_yr": 19000000,
+      "variable_cost_vnd_per_ha_yr": 6000000,
+      "labour_days_per_ha_yr": 140,
+      "establishment_cost_vnd_per_ha": 0,
+      "rotation_years": 1,
+      "years_to_first_income": 0,
+      "notes": "Low-input / intercropped annual crops (maize with legumes, upland rice, peanut), manual weeding, partial clearance, no herbicide. Gross = ~2.8 t/ha maize x 6,200 + ~1.6 M legume intercrop. Low-input H'mong fields yield 1.5-3 t/ha (ICRAF); peanut HB 2.26 t/ha. Fewer purchased inputs, more weeding labour (thesis: all annual-crop managers used complete clearance at 5.3 mowings/yr; manual partial clearance raises labour). Net ~13 M VND/ha but ~93,000 VND per labour day (less labour-efficient than MAIZE_INT).",
+      "sources": [
+        "ICRAF AFLI diagnosis (low-input yields 1.5-3 t/ha; upland rice and peanut economics) (verified)",
+        "Land 2020, 9(11):451, sole maize Mai Son 4.6 t/ha mean falling to 4.2 https://www.mdpi.com/2073-445X/9/11/451/htm (verified)",
+        "NSO PX-Web V06.34/V06.35 peanut Hoa Binh (verified)",
+        "Luong 2025 MSc thesis, section 'Management practices' (mowing intensity by land use) (verified)"
+      ],
+      "confidence": "assumption"
+    },
+    "ORCHARD": {
+      "land_type": "FARMLAND",
+      "output_value_vnd_per_ha_yr": 35105000,
+      "variable_cost_vnd_per_ha_yr": 13977000,
+      "labour_days_per_ha_yr": 93,
+      "establishment_cost_vnd_per_ha": 60000000,
+      "establishment_cost_annualised_vnd_per_ha_yr": 6111000,
+      "rotation_years": 20,
+      "years_to_first_income": 4,
+      "mature_values": {"output_vnd_per_ha_yr": 60000000, "variable_cost_vnd_per_ha_yr": 20000000, "labour_days_per_ha_yr": 110, "full_bearing_from_year": 8},
+      "yield_ramp": {"year4": 0.15, "year5": 0.35, "year6": 0.55, "year7": 0.75, "year8_20": 1.0},
+      "notes": "Longan / pomelo / other fruit with understorey slashing (thesis: perennial cropland intervention high in early years, then levels 2-3). Annualised over a 20-yr economic life at 8%. Mature gross 60 M VND/ha (e.g. 6 t/ha longan x 10,000 VND/kg) is deliberately between the rain-fed Mai Son longan trial (3.0 t/ha at yr 7, gross ~26 M) and commercial valley belts (Tan Lac red pomelo ~194 M; Cao Phong orange profit 600-1,000 M) that are not representative of remote Mai Chau/Da Bac slopes. Establishment 60 M (Mai Son sole longan ~2,480 USD/ha in 2012 inflated). Capital constraint is binding for most households.",
+      "sources": [
+        "Land 2020, 9(11):451 fruit-tree agroforestry Mai Son 2012-2018 (verified)",
+        "Tuoi Tre/NLD 08/07/2024 Son La longan record price https://tuoitre.vn/nld/gia-nhan-son-la-tang-ky-luc-len-hon-50-ngan-dong-kg-196240708111013403.htm (approximate)",
+        "NLD 09/12/2024 Cao Phong orange https://tuoitre.vn/nld/ve-thu-phu-cam-noi-tieng-o-mien-bac-nong-dan-thu-hang-tram-trieu-dong-den-tien-ti-moi-ha-196241209095848652.htm (verified; not representative)",
+        "Bao Hoa Binh 'Ngot thom buoi do Tan Lac' 2024 (approximate, site offline)"
+      ],
+      "confidence": "assumption"
+    },
+    "ACACIA": {
+      "land_type": "PRODUCTION_FOREST",
+      "output_value_vnd_per_ha_yr": 9542000,
+      "variable_cost_vnd_per_ha_yr": 2070000,
+      "labour_days_per_ha_yr": 28,
+      "establishment_cost_vnd_per_ha": 16000000,
+      "establishment_cost_annualised_vnd_per_ha_yr": 3461000,
+      "rotation_years": 6,
+      "years_to_first_income": 6,
+      "cycle_values": {"stumpage_revenue_vnd_per_ha_at_harvest": 70000000, "maintenance_vnd": {"y2": 6000000, "y3": 3000000, "y4": 1000000, "y5": 1000000, "y6": 1000000}, "labour_days": {"y1": 90, "y2": 30, "y3": 15, "y4": 5, "y5": 5, "y6": 5}},
+      "notes": "Short-rotation Acacia hybrid/mangium, weeding in early years, clearfell sold standing (buyer bears harvest). Stumpage 70 M VND/ha at 6 yr = ~95 m3 merchantable x ~740,000 VND/m3 (Thai Nguyen standing price Feb 2024; Luong Son company stands 99 m3 at 6 yr, 119 m3 at 7 yr; smallholder Da Bac 2013 revenue 50 M at 7 yr). Establishment 16 M = Da Bac 2007-13 Y1 cost 10.62 M inflated x1.5 (seedlings, fertiliser, partly hired labour). Returns ~141,000 VND per labour day before support. Thesis reports acacia the most recommended species (22 reports).",
+      "sources": [
+        "Do Anh Tuan 2013, Tap chi KHLN 4/2013, optimal rotation Acacia hybrid Luong Son (Hoa Binh) https://vjfs.vafs.gov.vn/js/article/view/429 (verified)",
+        "Phuong et al. 2016 IJC Table 6 and 9 (Da Bac acacia costs, 50 M revenue at yr 7) (verified)",
+        "Bao Thai Nguyen Feb 2024 acacia price https://baothainguyen.vn/kinh-te/202402/gia-go-keo-tang-f441091/ (verified)",
+        "VNUF journal, Acacia labour 200-250 man-days per 7-yr cycle (approximate) https://journal.vnuf.edu.vn/vi/article/view/636"
+      ],
+      "confidence": "approximate"
+    },
+    "NATIVE_MIX": {
+      "land_type": "PRODUCTION_FOREST",
+      "output_value_vnd_per_ha_yr": 7246000,
+      "variable_cost_vnd_per_ha_yr": 2254000,
+      "labour_days_per_ha_yr": 30,
+      "establishment_cost_vnd_per_ha": 20000000,
+      "establishment_cost_annualised_vnd_per_ha_yr": 1874000,
+      "rotation_years": 25,
+      "years_to_first_income": 5,
+      "cycle_values": {"composition": "50% bamboo (luong Dendrocalamus) + 50% Chukrasia tabularis / Meliaceae / native broadleaves", "bamboo_gross_vnd_per_ha_yr_from_y5_at_50pct": 6000000, "thinning_y12_vnd_at_50pct": 10000000, "final_standing_sale_y25_vnd_at_50pct": 200000000},
+      "notes": "Long rotation, low intensity. Bamboo: first harvest yr 5, culms >=3 yr, 30-40% per harvest (VAFS); traditional net 7-9 M VND/ha/yr, gross ~12 M full stand (Thanh Hoa luong). Native timber: ~120 m3/ha merchantable at 25 yr x ~4 M VND/m3 standing = ~480 M full stand; 200 M at 50% share (conservative vs Kyaw et al. 2024 Chukrasia 36,691 USD/ha, which assumes 1,440 surviving trees). At 8% the 25-yr timber pulse contributes only ~2.7 M/yr; bamboo carries early cash flow. ~104,000 VND per labour day before support. Thesis: Chukrasia 13 and bamboo 11 recommendation reports; Chukrasia >20 yr, luong 6-7 yr harvest cycle locally.",
+      "sources": [
+        "Kyaw, Kainyande & Van Hiep 2024, Forestist 74(3):308-315, Chukrasia profitability Yen Chau https://forestist.org/index.php/pub/article/view/2596 (verified)",
+        "VAFS 'Quy trinh ky thuat trong rung Luong' https://vafs.gov.vn/vn/quy-trinh-ky-thuat-trong-rung-luong/ (verified)",
+        "Dan toc & Phat trien 02/04/2023 Thanh Hoa luong economics https://dantocphattrien.vietnamnet.vn/thanh-hoa-cay-kinh-te-chu-luc-o-nhieu-huyen-mien-nui-thieu-dau-ra-42638.html (verified)",
+        "Dan Viet 11/08/2020 HB large-timber model 200-300 M VND/ha per 10-12 yr https://danviet.vn/hoa-binh-giup-nguoi-dan-yen-tam-trong-rung-go-lon-20200811181513082-d903121.html (verified)",
+        "Thien nhien Moi truong 21/08/2024: HB target 150 m3/ha per large-timber cycle, 25 M VND/ha/yr https://thiennhienmoitruong.vn/hoa-binh-thuc-hien-hieu-qua-cac-giai-phap-bao-ve-va-phat-trien-rung.html (verified)"
+      ],
+      "confidence": "assumption"
+    },
+    "REGEN": {
+      "land_type": "PRODUCTION_FOREST",
+      "output_value_vnd_per_ha_yr": 1200000,
+      "variable_cost_vnd_per_ha_yr": 0,
+      "labour_days_per_ha_yr": 6,
+      "establishment_cost_vnd_per_ha": 0,
+      "rotation_years": null,
+      "years_to_first_income": 2,
+      "notes": "Natural regeneration zoning (khoanh nuoi xuc tien tai sinh), no planting. Market value = NTFP only (bamboo shoots, firewood, medicinal herbs, e.g. thesis herbal-medicine use in Tien Phong/Cao Son). No timber: natural-forest logging is closed and a regrown stand becomes 'production forest being natural forest'. Zoning period 6 yr under Decree 58/2024; dossier cost (50,000-150,000 VND/ha) is paid by the state. Support/payments in scenarios.json.",
+      "sources": ["Decree 58/2024/ND-CP Arts. 6, 10, 12, 13 (verified)", "Luong 2025 thesis Fig. 4.4 herbal medicine (verified, qualitative)"],
+      "confidence": "assumption"
+    },
+    "PROTECT_STRICT": {
+      "land_type": "PROTECTION_FOREST",
+      "output_value_vnd_per_ha_yr": 400000,
+      "variable_cost_vnd_per_ha_yr": 20000,
+      "labour_days_per_ha_yr": 1.0,
+      "establishment_cost_vnd_per_ha": 0,
+      "rotation_years": null,
+      "years_to_first_income": 0,
+      "notes": "Patrol, no cutting, PFES-compliant. Only non-destructive NTFP collection permitted by community rules (thesis: planting only in small pre-existing gaps, no logging in protection forest). Labour = patrol effort: thesis patrol teams of 5-7 members, mowing 0-1 times/yr, up to 4 for patrol access; ~1 person-day/ha/yr for a 300-400 ha community forest. Payments (PFES, protection contracts, carbon) in scenarios.json.",
+      "sources": ["Luong 2025 thesis, 'Knowledge about Local Ecological Policy' and 'Management practices' (verified, qualitative)"],
+      "confidence": "assumption"
+    },
+    "PROTECT_USE": {
+      "land_type": "PROTECTION_FOREST",
+      "output_value_vnd_per_ha_yr": 2500000,
+      "variable_cost_vnd_per_ha_yr": 0,
+      "labour_days_per_ha_yr": 12,
+      "establishment_cost_vnd_per_ha": 0,
+      "rotation_years": null,
+      "years_to_first_income": 0,
+      "notes": "Informal extractive use: understorey cutting, firewood, bamboo shoots, NTFP, grazing. Output is imputed subsistence + cash value (assumption). In scenarios.json this activity receives 50% of the PROTECT_STRICT payment (expected loss from annual acceptance testing / penalties, assumption). Thesis: 7.5% of managers worried about cattle damage and bamboo-shoot theft; 25% of plots used inconsistently with official planning.",
+      "sources": ["Luong 2025 thesis (verified, qualitative)"],
+      "confidence": "assumption"
+    },
+    "FALLOW": {
+      "land_type": "FARMLAND",
+      "output_value_vnd_per_ha_yr": 0,
+      "variable_cost_vnd_per_ha_yr": 0,
+      "labour_days_per_ha_yr": 0,
+      "establishment_cost_vnd_per_ha": 0,
+      "rotation_years": null,
+      "years_to_first_income": null,
+      "notes": "Fallow / natural regrowth on legal farmland (HNK/CLN/BHK/LUC), no management, no market output. Not eligible for forest support unless re-planned into forest land.",
+      "sources": ["definitional"],
+      "confidence": "verified"
+    }
+  },
+  "summary_net_before_own_labour_vnd_per_ha_yr": {
+    "MAIZE_INT": 13000000, "MAIZE_LOW": 13000000, "ORCHARD": 15017000, "ACACIA": 4011000, "NATIVE_MIX": 3119000, "REGEN": 1200000, "PROTECT_STRICT": 380000, "PROTECT_USE": 2500000, "FALLOW": 0,
+    "_note": "output - variable cost - annualised establishment; excludes payments and own-labour cost"
+  }
+}

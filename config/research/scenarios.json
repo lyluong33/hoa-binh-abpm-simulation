@@ -1,0 +1,183 @@
+{
+  "vnd_per_eur": 29424,
+  "_description": "Policy scenarios for the Mai Chau / Da Bac ABM (period 1 = 2025 ... period 18 = 2042). Amounts are EXPECTED values per ha per year in 2025 VND = nominal legal rate x delivery rate (see payment_components). Market economics are in activity_economics.json. Activities not listed in a payments/support map receive 0; activities not listed in price_multipliers have multiplier 1.0. See docs/research/scenario.md.",
+  "global_assumptions": {
+    "pfes_unit_rate_2025_vnd_per_ha_yr": {"value": 200000, "range": [140000, 240000], "confidence": "approximate", "basis": "Tan Minh commune (Da Bac; now part of xa Cao Son) 2017: 3,000 ha, VND 711.4 M = 237,000 VND/ha (GIZ/SNRD PFES-banking pilot report, verified); Da Bac c.2013-14: 65,000 VND/ha (Phuong et al. 2016, verified); thesis: Hoa Binh average 143,500 VND/ha/yr since 2011 (citing Vu 2024 MSc thesis, secondary). No official 2019-2025 series found."},
+    "pfes_on_regen_factor": {"value": 0.9, "confidence": "assumption", "basis": "K1 coefficient for poor/young natural forest (Decree 91/2024 added K1 for poor, no-stock and planted forest); REGEN assumed to be inside PFES supply maps once it qualifies as forest."},
+    "pfes_on_plantations": {"value": 0, "confidence": "assumption", "basis": "Planted production forest can be paid PFES with K1 coefficients, but short-rotation stands and small household plots are rarely in Hoa Binh PFES maps in the thesis evidence; set to 0 (sensitivity: 0.9 x PFES for NATIVE_MIX)."},
+    "state_protection_rate_vnd_per_ha_yr": {"value": 600000, "confidence": "verified (rate) / assumption (region factor)", "basis": "Decree 58/2024/ND-CP Art. 9.2(c) -> Art. 5.2(b): 500,000 VND/ha/yr for households and residential communities owning protection forest; x1.2 in region-II and x1.5 in region-III communes (Art. 9.2(dd)). Region class of the 4 study communes under Decision 861/QD-TTg not verified; x1.2 used (x1.5 = 750,000 as sensitivity)."},
+    "delivery_rate_baseline": {"value": 0.5, "confidence": "assumption", "basis": "Budget-constrained delivery of state forest-protection and planting support. Analog: Tuyen Quang disbursed ~28% of its 2022 NTP-1719 Sub-project 1 plan; in Hung Loi commune only 486 of 1,621 ha qualified (Bao Tuyen Quang 23/05/2023, verified)."},
+    "protect_use_payment_share": {"value": 0.5, "confidence": "assumption", "basis": "PFES and protection payments are conditional on annual acceptance testing (Decree 58/2024 Art. 5.4(b), Art. 19.5); informal extraction is often tolerated but raises the risk of withheld payments or penalties."},
+    "annualisation": "One-off support converted to an equal annuity at 8%/yr over the support/rotation period: A = S x r/(1-(1+r)^-n); CRF(6)=0.21632, CRF(25)=0.09368.",
+    "study_area_note": "Tien Phong and Cao Son communes belonged to Da Bac district, not Mai Chau; since 01/07/2025 they are xa Tien Phong and xa Cao Son of Phu Tho province (NQ 1676/NQ-UBTVQH15)."
+  },
+  "scenarios": [
+    {
+      "id": "S0_BASELINE",
+      "name_vi": "Hiện trạng chính sách 2024-2025: chi trả DVMTR + kinh phí bảo vệ rừng + hỗ trợ trồng rừng theo Nghị định 58/2024 (giải ngân một phần)",
+      "name_en": "Status quo 2024-2025: PFES + state protection funds + Decree 58/2024 planting support (partial delivery)",
+      "legal_basis": [
+        {"doc": "Law on Forestry No. 16/2017/QH14 (15/11/2017, effective 01/01/2019)", "article": "Arts. 61-65 (forest environmental services; Art. 61 lists service types)", "url": "https://luatvietnam.vn/nong-nghiep/luat-lam-nghiep-2017-so-16-2017-qh14-118853-d1.html"},
+        {"doc": "Decree 156/2018/ND-CP (16/11/2018, effective 01/01/2019)", "article": "Art. 59 (PFES rates: hydropower 36 VND/kWh, clean water 52 VND/m3, industrial water 50 VND/m3, eco-tourism >=1% revenue); Arts. 60-70 (payment, K coefficients, fund use)", "url": "https://english.luatvietnam.vn/decree-no-156-2018-nd-cp-dated-november-16-2018-of-the-government-detailing-a-number-of-articles-of-the-law-on-forestry-169023-doc1.html"},
+        {"doc": "Decree 91/2024/ND-CP (18/07/2024, effective on signing)", "article": "Amends PFES provisions of Decree 156: K1/K4 coefficients, Appendix VII inter-provincial basin regulation, Appendix VIII industrial water users", "url": "https://chinhphu.vn/?docid=210703&pageid=27160"},
+        {"doc": "Decree 58/2024/ND-CP (24/05/2024, effective 15/07/2024)", "article": "Art. 9 (protection-forest funds 500,000 VND/ha/yr, x1.2/x1.5), Art. 14 (15 M VND/ha/cycle planting support + 0.5 M VND/ha/4 yr extension), Art. 19 (protection contracts), Art. 21 (rice 15 kg/person/month)", "url": "https://english.luatvietnam.vn/dau-tu/decree-58-2024-nd-cp-policies-on-investment-in-forestry-343272-d1.html"},
+        {"doc": "Decision 861/QD-TTg (04/06/2021)", "article": "List of region I/II/III communes 2021-2025 (determines x1.2/x1.5 factors and eligibility)", "url": "https://vanban.chinhphu.vn/?pageid=27160&docid=203373"}
+      ],
+      "payments_vnd_per_ha_yr": {"PROTECT_STRICT": 500000, "PROTECT_USE": 250000, "REGEN": 180000},
+      "annualised_support_vnd_per_ha_yr": {"ACACIA": 1676000, "NATIVE_MIX": 726000},
+      "price_multipliers": {"MAIZE_INT": 1.0, "MAIZE_LOW": 1.0, "ORCHARD": 1.0, "ACACIA": 1.0, "NATIVE_MIX": 1.0},
+      "phasing": [],
+      "extension_campaign": null,
+      "payment_components": [
+        {"activity": "PROTECT_STRICT", "component": "PFES (Hoa Binh / Da river basin)", "nominal_vnd_per_ha_yr": 200000, "delivery_rate": 1.0, "expected_vnd_per_ha_yr": 200000, "start_period": 1, "confidence": "approximate"},
+        {"activity": "PROTECT_STRICT", "component": "State protection funds, Decree 58/2024 Art. 9 (500,000 x 1.2)", "nominal_vnd_per_ha_yr": 600000, "delivery_rate": 0.5, "expected_vnd_per_ha_yr": 300000, "start_period": 1, "confidence": "verified rate / assumption delivery"},
+        {"activity": "PROTECT_USE", "component": "50% of PROTECT_STRICT", "expected_vnd_per_ha_yr": 250000, "start_period": 1, "confidence": "assumption"},
+        {"activity": "REGEN", "component": "PFES x 0.9 (K1)", "nominal_vnd_per_ha_yr": 180000, "delivery_rate": 1.0, "expected_vnd_per_ha_yr": 180000, "start_period": 1, "confidence": "assumption"},
+        {"activity": "ACACIA", "component": "Decree 58/2024 Art. 14: 15 M/ha/cycle + 0.5 M extension, annuity over 6 yr = 3,352,888", "delivery_rate": 0.5, "expected_vnd_per_ha_yr": 1676000, "kind": "annualised_support", "confidence": "verified rate / assumption delivery"},
+        {"activity": "NATIVE_MIX", "component": "Decree 58/2024 Art. 14: 15 M/ha/cycle + 0.5 M extension, annuity over 25 yr = 1,452,021", "delivery_rate": 0.5, "expected_vnd_per_ha_yr": 726000, "kind": "annualised_support", "confidence": "verified rate / assumption delivery"}
+      ],
+      "eligibility": "Planting support (Art. 14) only for ethnic-minority households, poor Kinh households and residential communities in mountainous/ethnic-minority communes with allocated, leased or stably used undisputed land. Thesis: 50% of managers hold certificates (35% red, 7.5% green, 7.5% rental), ~17% manage protection forest under community schemes, 32.5% have no certificate.",
+      "conditions_vi": "Chủ rừng là hộ gia đình, cộng đồng dân cư được giao rừng phòng hộ hoặc nhận khoán; rừng nằm trong bản đồ chi trả DVMTR của Quỹ BV&PTR tỉnh; nghiệm thu hằng năm không để mất rừng. Hỗ trợ trồng rừng sản xuất chỉ cho hộ DTTS, hộ Kinh nghèo, cộng đồng ở xã miền núi có đất được giao/thuê hoặc sử dụng ổn định không tranh chấp; không hỗ trợ trùng lặp. Kinh phí phụ thuộc ngân sách nên chỉ giải ngân một phần (giả định 50%).",
+      "mechanism_vi": "Thu nhập tiền mặt nhỏ gắn với việc giữ rừng (PROTECT_STRICT khoảng 0,5 triệu đồng/ha/năm kỳ vọng, tương đương ~17 EUR) và hỗ trợ một lần 15 triệu đồng/ha/chu kỳ cho trồng rừng sản xuất, như nhau cho keo và cây bản địa. Vì hỗ trợ tính theo chu kỳ, keo 6 năm nhận hỗ trợ quy năm gấp khoảng 2,3 lần cây gỗ lớn 25 năm.",
+      "expected_effect_vi": "Duy trì xu hướng hiện tại: rừng phòng hộ cộng đồng được giữ nhưng vẫn có khai thác lâm sản phụ; đất sản xuất tiếp tục chuyển sang keo chu kỳ ngắn; ngô/sắn trên đất dốc vẫn có lợi nhuận tiền mặt cao hơn nhiều lần so với chi trả DVMTR (chưa tới 5% lãi ròng của ngô). Đa dạng sinh học cảnh quan chủ yếu dựa vào rừng phòng hộ.",
+      "evidence_confidence": "approximate"
+    },
+    {
+      "id": "S1_PFES_CARBON",
+      "name_vi": "Tăng đơn giá DVMTR nhờ điều tiết liên tỉnh (NĐ 91/2024) và bổ sung dịch vụ hấp thụ, lưu giữ carbon rừng (NĐ 180/2026)",
+      "name_en": "PFES uplift through inter-provincial basin regulation (Decree 91/2024) plus forest-carbon service payments (Decree 180/2026)",
+      "legal_basis": [
+        {"doc": "Law on Forestry No. 16/2017/QH14", "article": "Art. 61 (forest carbon sequestration and storage is a forest environmental service type)", "url": "https://luatvietnam.vn/nong-nghiep/luat-lam-nghiep-2017-so-16-2017-qh14-118853-d1.html"},
+        {"doc": "Decree 91/2024/ND-CP (18/07/2024)", "article": "Inter-provincial regulation of PFES revenue within a basin to narrow unit-price gaps (VNFF regulates before 31 January each year, Appendix VII); PFES funds may be spent on forest-carbon preparation. Does NOT itself create a carbon-service payer category.", "url": "https://dantocphattrien.vietnamnet.vn/nghi-dinh-so-91-2024-nd-cp-thao-go-nhung-vuong-mac-trong-thuc-hien-chinh-sach-chi-tra-dich-vu-moi-truong-rung-59060.html"},
+        {"doc": "Decree 180/2026/ND-CP (May 2026, effective 01/07/2026)", "article": "Forest carbon absorption and storage service: payment in VND per tCO2 / per forest carbon credit, direct or via the Forest Protection and Development Fund; carbon projects, MRV and MAE confirmation required; forest owners own credits from their own projects", "url": "https://baochinhphu.vn/nguyen-tac-cung-ung-va-su-dung-dich-vu-hap-thu-va-luu-giu-carbon-cua-rung-102260523195015752.htm"},
+        {"doc": "Decree 107/2022/ND-CP (28/12/2022)", "article": "ERPA pilot, North Central Coast (6 provinces, not Hoa Binh): analog for per-ha carbon payments", "url": "https://vanban.chinhphu.vn/?classid=1&docid=207089&pageid=27160&typegroupid=4"}
+      ],
+      "payments_vnd_per_ha_yr": {"PROTECT_STRICT": 817000, "PROTECT_USE": 408500, "REGEN": 482000},
+      "annualised_support_vnd_per_ha_yr": {"ACACIA": 1676000, "NATIVE_MIX": 726000},
+      "price_multipliers": {"MAIZE_INT": 1.0, "MAIZE_LOW": 1.0, "ORCHARD": 1.0, "ACACIA": 1.0, "NATIVE_MIX": 1.0},
+      "phasing": [{"from_period": 1, "factor": 0.612}, {"from_period": 2, "factor": 0.796}, {"from_period": 4, "factor": 1.0}],
+      "phasing_note": "Factors are PROTECT_STRICT totals relative to full implementation (500k in 2025, 650k in 2026-27 with PFES uplift only, 817k from 2028 with carbon). If the model supports payment_components, use them instead of phasing.",
+      "extension_campaign": null,
+      "payment_components": [
+        {"activity": "PROTECT_STRICT", "component": "PFES after basin regulation", "nominal_vnd_per_ha_yr": 350000, "delivery_rate": 1.0, "expected_vnd_per_ha_yr": 350000, "start_period": 2, "confidence": "assumption", "basis": "midpoint between HB ~200k and national average ~570k VND/ha (4,156 bn VND over ~7.3 M ha supplying services, VNFF via Dan toc & Phat trien 02/10/2024, derived)"},
+        {"activity": "PROTECT_STRICT", "component": "State protection funds (as S0)", "expected_vnd_per_ha_yr": 300000, "start_period": 1, "confidence": "assumption"},
+        {"activity": "PROTECT_STRICT", "component": "Forest carbon service payment", "nominal_vnd_per_ha_yr": 167000, "delivery_rate": 1.0, "expected_vnd_per_ha_yr": 167000, "start_period": 4, "confidence": "approximate", "basis": "ERPA Thanh Hoa 2023 unified rate 166,711 VND/ha (nongnghiepmoitruong.vn via search snippet); start 2028 assumes 2 yr for project registration and MRV under Decree 180/2026"},
+        {"activity": "PROTECT_USE", "component": "50% of PROTECT_STRICT", "expected_vnd_per_ha_yr": 408500, "confidence": "assumption"},
+        {"activity": "REGEN", "component": "PFES x 0.9 after regulation (315,000) + carbon 167,000", "expected_vnd_per_ha_yr": 482000, "start_period": 2, "confidence": "assumption"}
+      ],
+      "eligibility": "Natural forest supplying services within the Da river basin; carbon only for forest in a registered carbon project (provincial or forest-owner project) with verified emission reductions.",
+      "conditions_vi": "Rừng nằm trong lưu vực cung ứng DVMTR; Quỹ BV&PTR Việt Nam điều tiết tiền DVMTR giữa các tỉnh cùng lưu vực sông Đà làm tăng đơn giá cho Hòa Bình (nay là Phú Thọ). Tiền carbon chỉ có khi tỉnh hoặc chủ rừng xây dựng, đăng ký dự án carbon rừng, đo đạc – báo cáo – thẩm định (MRV) và được Bộ NN&MT xác nhận; giá tính theo tấn CO2, không cố định theo ha. Giả định có tiền từ năm 2028.",
+      "mechanism_vi": "Tăng khoản thu gắn với giữ rừng nghiêm ngặt từ ~0,5 lên ~0,82 triệu đồng/ha/năm; khoảng cách giữa PROTECT_STRICT và PROTECT_USE được nới rộng, làm tăng chi phí cơ hội của khai thác không chính thức và khuyến khích để đất sản xuất tái sinh tự nhiên.",
+      "expected_effect_vi": "Giảm tỷ lệ PROTECT_USE, tăng REGEN ở hộ có ít lao động; tác động lên đất nông nghiệp nhỏ vì 0,8 triệu đồng/ha vẫn thấp hơn rất nhiều so với lãi ròng của ngô (~13 triệu đồng/ha). Cải thiện cấu trúc và đa dạng loài của rừng phòng hộ (ít phát dọn tầng dưới).",
+      "evidence_confidence": "approximate"
+    },
+    {
+      "id": "S2_NATIVE_PLANTING",
+      "name_vi": "Ưu tiên trồng rừng gỗ lớn, cây bản địa (Điều 14, 15, 16 NĐ 58/2024 và Đề án rừng sản xuất bền vững của Hòa Bình)",
+      "name_en": "Targeted support for native / large-timber planting (Decree 58/2024 Arts. 14-16; Hoa Binh production-forest scheme 2020-2025/2035)",
+      "legal_basis": [
+        {"doc": "Decree 58/2024/ND-CP", "article": "Art. 14 (15 M VND/ha/cycle, same for all timber and NTFP species; 0.5 M VND/ha/4 yr extension), Art. 15 (large-timber credit: interest-rate difference paid for up to 12 years on up to 70% of the loan; rate set by provincial People's Council), Art. 16 (up to 0.4 M VND/ha for SFM/FSC certification)", "url": "https://english.luatvietnam.vn/dau-tu/decree-58-2024-nd-cp-policies-on-investment-in-forestry-343272-d1.html"},
+        {"doc": "Decision 38/2016/QD-TTg (14/09/2016, effective 01/11/2016; replaced for these items by Decree 58/2024)", "article": "Art. 5: large-timber/native species 8 M VND/ha vs small-timber 5 M VND/ha (the species differential that Decree 58/2024 removed)", "url": "https://luatvietnam.vn/dau-tu/quyet-dinh-38-2016-qd-ttg-ve-mot-so-chinh-sach-bao-ve-phat-trien-rung-108441-d1.html"},
+        {"doc": "Hoa Binh 'De an ho tro phat trien ben vung rung san xuat 2020-2025, dinh huong 2035' (under Decision 327/QD-TTg, 10/03/2022)", "article": "Targets: 3,000 ha/yr small-timber converted to large timber, 6,000 ha/yr new large-timber, 50% FSC; interest-rate support; 150 m3/ha per cycle; large-timber area 525 ha (2019) to ~20,000 ha (2023)", "url": "https://thiennhienmoitruong.vn/hoa-binh-thuc-hien-hieu-qua-cac-giai-phap-bao-ve-va-phat-trien-rung.html"},
+        {"doc": "Decision 208/QD-TTg (29/02/2024)", "article": "Scheme on multi-use values of forest ecosystems to 2030 (under-canopy NTFP/medicinal plants, agroforestry)", "url": "https://nongthon.vietnamtourism.gov.vn/hoa-binh-phat-trien-gia-tri-da-dung-he-sinh-thai-rung/"}
+      ],
+      "payments_vnd_per_ha_yr": {"PROTECT_STRICT": 500000, "PROTECT_USE": 250000, "REGEN": 180000},
+      "annualised_support_vnd_per_ha_yr": {"NATIVE_MIX": 1786000, "ACACIA": 0},
+      "price_multipliers": {"MAIZE_INT": 1.0, "MAIZE_LOW": 1.0, "ORCHARD": 1.0, "ACACIA": 1.0, "NATIVE_MIX": 1.10},
+      "phasing": [],
+      "extension_campaign": null,
+      "payment_components": [
+        {"activity": "NATIVE_MIX", "component": "Art. 14 planting support 15 M + 0.5 M, full delivery, annuity over 25 yr", "expected_vnd_per_ha_yr": 1452000, "kind": "annualised_support", "confidence": "verified rate / assumption delivery 1.0"},
+        {"activity": "NATIVE_MIX", "component": "Art. 15 interest support: 3%/yr on 14 M (70% of 20 M) for 12 yr, PV 3.17 M, annuity over 25 yr", "expected_vnd_per_ha_yr": 297000, "kind": "annualised_support", "confidence": "assumption (interest differential)"},
+        {"activity": "NATIVE_MIX", "component": "Art. 16 FSC/SFM certification 0.4 M one-off, annuity over 25 yr", "expected_vnd_per_ha_yr": 37000, "kind": "annualised_support", "confidence": "verified rate"},
+        {"activity": "ACACIA", "component": "Provincial projects target large timber; no new small-timber support", "expected_vnd_per_ha_yr": 0, "kind": "annualised_support", "confidence": "assumption (provincial targeting choice under Art. 14.4)"},
+        {"activity": "NATIVE_MIX", "component": "Price premium for certified large timber (+10%)", "kind": "price_multiplier", "value": 1.10, "confidence": "assumption"}
+      ],
+      "eligibility": "As S0 (ethnic-minority/poor households in mountainous communes; allocated/leased or stably used undisputed land); credit support requires a bank loan and a planting design; roughly 1/3 of surveyed managers lack any certificate and would be excluded.",
+      "conditions_vi": "Hộ DTTS, hộ Kinh nghèo, cộng đồng ở xã miền núi có đất rừng sản xuất được giao/thuê hoặc sử dụng ổn định; có hồ sơ giống hợp lệ; vay vốn ngân hàng thương mại để được cấp bù chênh lệch lãi suất (tối đa 12 năm, tối đa 70% khoản vay, mức do HĐND tỉnh quyết định). Tỉnh ưu tiên dự án gỗ lớn/cây bản địa (như Đề án 2020-2025 của Hòa Bình), không mở dự án hỗ trợ mới cho keo gỗ nhỏ.",
+      "mechanism_vi": "Hỗ trợ quy năm cho NATIVE_MIX tăng từ ~0,73 lên ~1,79 triệu đồng/ha/năm và giá gỗ lớn có chứng chỉ cao hơn 10%; keo mất hỗ trợ. Khuyến nghị loài của cán bộ xã có ảnh hưởng thật tới lựa chọn cây trồng (luận văn: tương quan ρ = 0,68 giữa tần suất khuyến nghị và tần suất xuất hiện ngoài thực địa).",
+      "expected_effect_vi": "Một phần diện tích keo chuyển sang lát hoa, luồng và cây bản địa hỗn giao ở hộ có đất hợp pháp và chịu được vốn dài hạn; chu kỳ dài hơn, ít phát dọn toàn diện, tăng che phủ liên tục và đa dạng chức năng của rừng sản xuất. Lãi quy năm (trước công lao động) của NATIVE_MIX tăng lên ~5,6 triệu đồng/ha/năm, vượt keo không còn hỗ trợ (~4,0 triệu), trong khi ở S0 keo (~5,7) hơn hẳn cây bản địa (~3,9). Tác động vẫn bị giới hạn bởi chiết khấu 8%, nhu cầu vốn ban đầu và điều kiện đất hợp pháp: hộ thiếu vốn và không có giấy chứng nhận (32,5% trong mẫu) ít tham gia.",
+      "evidence_confidence": "approximate"
+    },
+    {
+      "id": "S3_REGEN_ZONING",
+      "name_vi": "Khoanh nuôi xúc tiến tái sinh và cấp đủ kinh phí bảo vệ rừng (Điều 10, 12, 13 NĐ 58/2024; NĐ 42/2026; CTMTQG vùng DTTS&MN)",
+      "name_en": "Natural regeneration zoning and fully funded protection support (Decree 58/2024 Arts. 10, 12, 13; Decree 42/2026; NTP for ethnic-minority and mountainous areas)",
+      "legal_basis": [
+        {"doc": "Decree 58/2024/ND-CP", "article": "Art. 10 with Art. 6.2 (regeneration zoning in protection-forest planning: 1 M VND/ha/yr for 6 yr; households eligible), Art. 12 (protection support for production forest being natural forest: 500,000 VND/ha/yr, x1.2/x1.5), Art. 13 (regeneration zoning with supplementary planting on production natural-forest land: average 8 M VND/ha one-off), Art. 19", "url": "https://english.luatvietnam.vn/dau-tu/decree-58-2024-nd-cp-policies-on-investment-in-forestry-343272-d1.html"},
+        {"doc": "Decree 42/2026/ND-CP (26/01/2026, effective on signing)", "article": "Amends Decree 58/2024 Art. 6.2: regeneration zoning 2.5 M VND/ha/yr for 6 yr (special-use); Art. 5.2: communities in special-use forest 1 M VND/ha/yr. Whether Art. 10 (protection forest) inherits the new rate via its cross-reference was not verified.", "url": "https://www.vietnamplus.vn/sua-doi-bo-sung-mot-so-chinh-sach-dau-tu-doi-voi-rung-dac-dung-post1090988.vnp"},
+        {"doc": "Decision 1719/QD-TTg (14/10/2021), Project 3 Sub-project 1; Circular 12/2022/TT-BNNPTNT (20/09/2022)", "article": "Forest protection contracts and regeneration zoning for ethnic-minority areas 2021-2025, using Decision 38/2016 rates (300,000 VND/ha/yr contracts; 3 M VND/ha/6 yr zoning)", "url": "https://vanban.chinhphu.vn/?pageid=27160&docid=204285"},
+        {"doc": "Merged NTP on new rural development, sustainable poverty reduction and ethnic-minority/mountainous areas 2026-2035 (phase I 2026-2030)", "article": "Successor financing channel from 2026 (document number not verified)", "url": "http://www.cema.gov.vn/phe-duyet-ctmtqg-xay-dung-nong-thon-moi-giam-ngheo-ben-vung-va-phat-trien-ktxh-vung-dong-bao-dtts-mn-giai-doan-2026-2035-giai-doan-i-tu-nam-2026-den-nam-2030.htm"}
+      ],
+      "payments_vnd_per_ha_yr": {"PROTECT_STRICT": 800000, "PROTECT_USE": 400000, "REGEN": 580000},
+      "annualised_support_vnd_per_ha_yr": {"REGEN": 1730000, "ACACIA": 1676000, "NATIVE_MIX": 726000},
+      "price_multipliers": {"MAIZE_INT": 1.0, "MAIZE_LOW": 1.0, "ORCHARD": 1.0, "ACACIA": 1.0, "NATIVE_MIX": 1.0},
+      "phasing": [],
+      "extension_campaign": null,
+      "payment_components": [
+        {"activity": "PROTECT_STRICT", "component": "PFES", "expected_vnd_per_ha_yr": 200000, "start_period": 1, "confidence": "approximate"},
+        {"activity": "PROTECT_STRICT", "component": "State protection funds 600,000, full delivery", "delivery_rate": 1.0, "expected_vnd_per_ha_yr": 600000, "start_period": 1, "confidence": "verified rate / assumption delivery"},
+        {"activity": "PROTECT_USE", "component": "50% of PROTECT_STRICT", "expected_vnd_per_ha_yr": 400000, "confidence": "assumption"},
+        {"activity": "REGEN", "component": "PFES x 0.9", "expected_vnd_per_ha_yr": 180000, "confidence": "assumption"},
+        {"activity": "REGEN", "component": "Art. 12 protection support 600,000 from year 7 of zoning (once the stand qualifies as natural forest), averaged over the 18-yr horizon = 400,000", "expected_vnd_per_ha_yr": 400000, "confidence": "assumption"},
+        {"activity": "REGEN", "component": "Art. 13 regeneration-zoning support 8 M VND/ha one-off, annuity over the 6-yr zoning period", "expected_vnd_per_ha_yr": 1730000, "duration_years": 6, "kind": "annualised_support", "confidence": "verified rate"},
+        {"activity": "REGEN", "component": "Sensitivity: Decree 42/2026 rate 2.5 M VND/ha/yr for 6 yr if it applies to protection-forest zoning", "expected_vnd_per_ha_yr": 2500000, "duration_years": 6, "kind": "sensitivity_only", "confidence": "approximate"}
+      ],
+      "eligibility": "REGEN support: organisations, ethnic-minority households, poor Kinh households and communities in mountainous communes on land planned as production natural forest (Art. 13) or protection forest (Art. 10); annual acceptance testing.",
+      "conditions_vi": "Diện tích nằm trong quy hoạch rừng phòng hộ hoặc rừng sản xuất là rừng tự nhiên, được thiết kế khoanh nuôi 6 năm và nghiệm thu hằng năm; chủ thể là hộ DTTS, hộ Kinh nghèo, cộng đồng ở xã miền núi. Kinh phí bảo vệ rừng được cấp đủ (giải ngân 100%) qua CTMTQG giai đoạn 2026-2030 và ngân sách tỉnh.",
+      "mechanism_vi": "Khoanh nuôi được hỗ trợ ~1,73 triệu đồng/ha/năm trong 6 năm đầu, sau đó là kinh phí bảo vệ rừng tự nhiên; rừng phòng hộ cộng đồng nhận 0,8 triệu đồng/ha/năm. Tái sinh tự nhiên trở thành lựa chọn có thu nhập cho đất rừng sản xuất bạc màu, xa, dốc, nơi keo và ngô kém hiệu quả.",
+      "expected_effect_vi": "Tăng diện tích REGEN trên đất rừng sản xuất xa, dốc (đặc biệt ở Cao Sơn nơi lo ngại sạt lở cao: 6/10 người được hỏi), giảm xói mòn, tăng kết nối sinh cảnh giữa các khoảnh rừng phòng hộ. Đất nông nghiệp ít thay đổi.",
+      "evidence_confidence": "approximate"
+    },
+    {
+      "id": "S4_MAIZE_PRESSURE",
+      "name_vi": "Giả định: giá ngô/sắn tăng mạnh, thâm canh trên đất dốc không kèm điều kiện môi trường",
+      "name_en": "HYPOTHETICAL: maize/cassava price boom and sloping-land intensification without environmental conditions",
+      "legal_basis": [
+        {"doc": "HYPOTHETICAL market scenario - no enabling policy", "article": "Crop Production Law No. 31/2018/QH14 Art. 71 requires anti-erosion procedures on sloping land and allows state support, but there is no payment, cross-compliance or enforcement mechanism tied to maize on slopes", "url": "https://thuviennhadat.vn/van-ban-phap-luat-viet-nam/luat-trong-trot-2018-336355.html"}
+      ],
+      "payments_vnd_per_ha_yr": {"PROTECT_STRICT": 500000, "PROTECT_USE": 250000, "REGEN": 180000},
+      "annualised_support_vnd_per_ha_yr": {"ACACIA": 1676000, "NATIVE_MIX": 726000},
+      "price_multipliers": {"MAIZE_INT": 1.35, "MAIZE_LOW": 1.20, "ORCHARD": 1.0, "ACACIA": 1.0, "NATIVE_MIX": 1.0},
+      "phasing": [],
+      "extension_campaign": null,
+      "payment_components": [],
+      "eligibility": "n/a",
+      "conditions_vi": "Không phải chính sách: kịch bản thị trường. Giá ngô hạt tăng 35% (từ ~6.200 lên ~8.400 đồng/kg), sản phẩm của canh tác ít đầu vào tăng 20% do bán được ít hơn; chi trả rừng giữ như S0. Biên độ này nằm trong dao động quan sát được (giá ngô bắp Sơn La 2016 3.700-3.800 đồng/kg; giá sắn giảm 30-50% năm 2025).",
+      "mechanism_vi": "Lãi ròng MAIZE_INT tăng từ ~13 lên ~23 triệu đồng/ha/năm, làm tăng chi phí cơ hội của bỏ hoang, trồng cây ăn quả và rừng; áp lực mở rộng nương ngô vào đất bỏ hoang và rìa rừng; thuốc diệt cỏ và đốt tăng.",
+      "expected_effect_vi": "FALLOW và MAIZE_LOW chuyển sang MAIZE_INT; một phần REGEN và PROTECT_USE bị lấn (nếu mô hình cho phép vi phạm quy hoạch – luận văn ghi nhận 25% thửa sử dụng không đúng quy hoạch). Suy giảm đa dạng chức năng trên đất nông nghiệp và tăng xói mòn. Dùng làm kịch bản áp lực để kiểm tra độ bền của S1-S5.",
+      "evidence_confidence": "assumption"
+    },
+    {
+      "id": "S5_INTEGRATED",
+      "name_vi": "Tổng hợp: DVMTR + carbon, cấp đủ kinh phí bảo vệ và khoanh nuôi, ưu tiên cây bản địa, kèm chiến dịch khuyến lâm – nâng cao nhận thức",
+      "name_en": "Integrated: PFES + carbon, fully funded protection and regeneration zoning, native planting priority, plus extension / awareness campaign",
+      "legal_basis": [
+        {"doc": "All legal bases of S1, S2 and S3", "article": "Decree 91/2024, Decree 180/2026, Decree 58/2024 Arts. 9-16, Decree 42/2026, NTP 2026-2035", "url": "https://english.luatvietnam.vn/dau-tu/decree-58-2024-nd-cp-policies-on-investment-in-forestry-343272-d1.html"},
+        {"doc": "Decree 58/2024/ND-CP", "article": "Art. 5.3 / 9.3 eligible spending: training to raise public awareness about forest protection, law dissemination in residential communities, forest-protection commitments", "url": "https://english.luatvietnam.vn/dau-tu/decree-58-2024-nd-cp-policies-on-investment-in-forestry-343272-d1.html"},
+        {"doc": "Decision 149/QD-TTg (28/01/2022), National Biodiversity Strategy to 2030, vision 2050", "article": "Targets: forest cover 42-43%, protected areas 9% of land, restore >=20% of degraded natural ecosystems; ecosystem-service valuation and sustainable use", "url": "https://vanban.chinhphu.vn/?docid=205263&pageid=27160"}
+      ],
+      "payments_vnd_per_ha_yr": {"PROTECT_STRICT": 1117000, "PROTECT_USE": 558500, "REGEN": 882000},
+      "annualised_support_vnd_per_ha_yr": {"NATIVE_MIX": 1786000, "ACACIA": 0, "REGEN": 1730000},
+      "price_multipliers": {"MAIZE_INT": 1.0, "MAIZE_LOW": 1.0, "ORCHARD": 1.0, "ACACIA": 1.0, "NATIVE_MIX": 1.10},
+      "phasing": [{"from_period": 1, "factor": 0.448}, {"from_period": 2, "factor": 0.850}, {"from_period": 4, "factor": 1.0}],
+      "phasing_note": "PROTECT_STRICT totals relative to full implementation: 2025 = baseline 500k; 2026-27 = PFES 350k + protection 600k; from 2028 + carbon 167k. Use payment_components if supported.",
+      "extension_campaign": {"coverage": 0.9, "awareness_effect_per_year": 0.08, "start_period": 2},
+      "extension_campaign_note": "Assumption. Baseline from thesis: 37 of 40 managers received official planting recommendations, 87.5% received some forest-protection/biodiversity message, but only 1 of 40 ever attended a biodiversity/ecosystem-service training. awareness_effect_per_year = increase of a 0-1 awareness index per year for covered agents (capped at 1).",
+      "payment_components": [
+        {"activity": "PROTECT_STRICT", "component": "PFES after regulation", "expected_vnd_per_ha_yr": 350000, "start_period": 2, "confidence": "assumption"},
+        {"activity": "PROTECT_STRICT", "component": "State protection funds 600,000, full delivery", "expected_vnd_per_ha_yr": 600000, "start_period": 2, "confidence": "verified rate / assumption delivery"},
+        {"activity": "PROTECT_STRICT", "component": "Forest carbon", "expected_vnd_per_ha_yr": 167000, "start_period": 4, "confidence": "approximate"},
+        {"activity": "PROTECT_USE", "component": "50% of PROTECT_STRICT", "expected_vnd_per_ha_yr": 558500, "confidence": "assumption"},
+        {"activity": "REGEN", "component": "PFES 315,000 + carbon 167,000 + Art. 12 protection 400,000 (horizon average)", "expected_vnd_per_ha_yr": 882000, "confidence": "assumption"},
+        {"activity": "REGEN", "component": "Art. 13 zoning support, annuity over 6 yr", "expected_vnd_per_ha_yr": 1730000, "duration_years": 6, "kind": "annualised_support", "confidence": "verified rate"},
+        {"activity": "NATIVE_MIX", "component": "Arts. 14-16 full delivery + interest + certification (as S2)", "expected_vnd_per_ha_yr": 1786000, "kind": "annualised_support", "confidence": "approximate"}
+      ],
+      "eligibility": "Union of S1-S3 eligibility; campaign reaches all household and community managers in the four communes (coverage 0.9).",
+      "conditions_vi": "Thực hiện đồng thời S1, S2, S3 từ năm 2026 (năm 2025 giữ hiện trạng); chiến dịch khuyến lâm và nâng cao nhận thức do Hạt Kiểm lâm, xã và Quỹ BV&PTR tổ chức (nội dung chi hợp lệ theo NĐ 58/2024 và tiền DVMTR), bao phủ 90% chủ đất, tập trung vào giá trị của rừng phòng hộ, loài bản địa, dịch vụ hệ sinh thái ít được nhận biết (thụ phấn, kiểm soát sâu hại) và kỹ thuật canh tác ít phát dọn.",
+      "mechanism_vi": "Kết hợp động lực tài chính (rừng phòng hộ 1,12 triệu đồng/ha/năm; khoanh nuôi 1,73 triệu đồng/ha/năm trong 6 năm; NATIVE_MIX 1,79 triệu đồng/ha/năm + giá cao hơn 10%) với thay đổi nhận thức và chuẩn mực (chỉ số nhận thức tăng 0,08/năm), tác động vào cả lợi ích và quy tắc ra quyết định của hộ.",
+      "expected_effect_vi": "Kịch bản có tác động lớn nhất lên sinh cảnh: giảm PROTECT_USE, tăng REGEN và NATIVE_MIX, giảm phát dọn toàn diện; chênh lệch thu nhập với ngô vẫn lớn nên đất nông nghiệp chủ yếu thay đổi qua kênh nhận thức (MAIZE_INT sang MAIZE_LOW, giữ FALLOW). Cần so sánh chi phí ngân sách với lợi ích đa dạng sinh học.",
+      "evidence_confidence": "approximate"
+    }
+  ]
+}
