@@ -605,6 +605,17 @@ tov_DEOBushFruitPerm,
 	tov_ITOrchard,
 	tov_ITOOrchard,
 
+	// Hoa Binh (HB) vegetation types - ABM-test coupling, 2026
+	tov_HBMaizeIntensive,
+	tov_HBMaizeLowInput,
+	tov_HBOrchard,
+	tov_HBFallow,
+	tov_HBAcacia,
+	tov_HBNativeMix,
+	tov_HBRegeneration,
+	tov_HBProtectStrict,
+	tov_HBProtectUse,
+
 	tov_Undefined // Must be in here and the last one as well!
 };
 

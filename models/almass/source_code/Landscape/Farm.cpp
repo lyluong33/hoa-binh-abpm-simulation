@@ -2375,6 +2375,16 @@ TTypesOfVegetation FarmManager::TranslateVegCodes(std::string& astr) {
 	if (str == "ITGrassland") return tov_ITGrassland;
 	if (str == "ITOrchard") return tov_ITOrchard;
 	if (str == "ITOOrchard") return tov_ITOOrchard;
+	// Hoa Binh (HB) vegetation types - ABM-test coupling, 2026
+	if (str == "HBMaizeIntensive") return tov_HBMaizeIntensive;
+	if (str == "HBMaizeLowInput") return tov_HBMaizeLowInput;
+	if (str == "HBOrchard") return tov_HBOrchard;
+	if (str == "HBFallow") return tov_HBFallow;
+	if (str == "HBAcacia") return tov_HBAcacia;
+	if (str == "HBNativeMix") return tov_HBNativeMix;
+	if (str == "HBRegeneration") return tov_HBRegeneration;
+	if (str == "HBProtectStrict") return tov_HBProtectStrict;
+	if (str == "HBProtectUse") return tov_HBProtectUse;
 
 	// No match so issue a warning and quit
 	g_msg->Warn(WARN_FILE, "FarmManager::TranslateVegCodes():"" Unknown Crop Code ", str.c_str());

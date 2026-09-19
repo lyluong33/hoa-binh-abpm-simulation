@@ -424,6 +424,8 @@ int PlantGrowthData::VegTypeToCurveNum(TTypesOfVegetation VegReference)
 	case tov_DKOSpringOats_CC:
       return 106; // Org. oats
 
+	case tov_HBMaizeIntensive: // Hoa Binh: maize growth curve
+	case tov_HBMaizeLowInput:
     case tov_Maize:
     case tov_MaizeSilage:
     case tov_MaizeStrigling:
@@ -725,6 +727,7 @@ int PlantGrowthData::VegTypeToCurveNum(TTypesOfVegetation VegReference)
     case tov_PermanentSetAside: 
 		return 92; // Permanent setaside
 
+	case tov_HBFallow: // Hoa Binh: set-aside (herbaceous regrowth) curve
 	case tov_Heath:
     case tov_SetAside:
     case tov_OSetAside:
@@ -739,6 +742,12 @@ int PlantGrowthData::VegTypeToCurveNum(TTypesOfVegetation VegReference)
 	case tov_DKOptimalFlowerMix3: /** \todo LKM: needs to be changed later - need a curve that matched rye grass / tussocky grass*/ 
 		return 112; // Setaside
 
+	case tov_HBOrchard: // Hoa Binh: understorey under canopy uses the natural-grass curve
+	case tov_HBAcacia:
+	case tov_HBNativeMix:
+	case tov_HBRegeneration:
+	case tov_HBProtectStrict:
+	case tov_HBProtectUse:
 	case tov_YoungForest:
 	case tov_NaturalGrass:
 	case tov_FlowerStrip1:

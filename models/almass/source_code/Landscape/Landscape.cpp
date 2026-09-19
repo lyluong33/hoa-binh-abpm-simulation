@@ -6059,6 +6059,24 @@ std::string Landscape::VegtypeToString(TTypesOfVegetation a_veg) {
 		return "Italian Orchard, apple";
 	case tov_ITOOrchard:
 		return "Italian Organic Orchard, apple";
+	case tov_HBMaizeIntensive:
+		return "Hoa Binh intensive maize/cassava (clearance, burning, herbicide)";
+	case tov_HBMaizeLowInput:
+		return "Hoa Binh low-input annual crops (manual weeding)";
+	case tov_HBOrchard:
+		return "Hoa Binh fruit orchard with understorey slashing";
+	case tov_HBFallow:
+		return "Hoa Binh fallow / natural regrowth on farmland";
+	case tov_HBAcacia:
+		return "Hoa Binh short-rotation acacia plantation";
+	case tov_HBNativeMix:
+		return "Hoa Binh native large-timber / bamboo mixed stand";
+	case tov_HBRegeneration:
+		return "Hoa Binh natural regeneration zone";
+	case tov_HBProtectStrict:
+		return "Hoa Binh protection forest, strict protection";
+	case tov_HBProtectUse:
+		return "Hoa Binh protection forest with understorey use";
 	default:
 		g_msg->Warn(WARN_FILE, "Landscape::VegtypeToString(): Unknown event type:", int(a_veg));
 		exit(1);

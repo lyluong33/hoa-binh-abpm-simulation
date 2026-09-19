@@ -789,6 +789,16 @@ void VegElement::SetBiomassScalers(TTypesOfVegetation a_tov) {
 	case	tov_WWheatPTreatment:	m_biomass_scale[a_tov] = 1;	break;
 	case	tov_YoungForest:	m_biomass_scale[a_tov] = 0.7857 * 0.67;	break;
 
+	// Hoa Binh (HB) vegetation types - ABM-test coupling, 2026
+	case	tov_HBMaizeIntensive:	m_biomass_scale[a_tov] = 1.0000;	break;
+	case	tov_HBMaizeLowInput:	m_biomass_scale[a_tov] = 0.9000;	break;
+	case	tov_HBOrchard:	m_biomass_scale[a_tov] = 0.7857;	break;
+	case	tov_HBFallow:	m_biomass_scale[a_tov] = 0.7857;	break;
+	case	tov_HBAcacia:	m_biomass_scale[a_tov] = 0.5264;	break;
+	case	tov_HBNativeMix:	m_biomass_scale[a_tov] = 0.5264;	break;
+	case	tov_HBRegeneration:	m_biomass_scale[a_tov] = 0.5264;	break;
+	case	tov_HBProtectStrict:	m_biomass_scale[a_tov] = 0.5264;	break;
+	case	tov_HBProtectUse:	m_biomass_scale[a_tov] = 0.5264;	break;
 	case tov_Undefined:	m_biomass_scale[a_tov] = 0;	break;
 	}
 }
@@ -4135,6 +4145,24 @@ TTypesOfVegetation LE_TypeClass::TranslateVegTypes( int VegReference ) {
 	case 1702:
 		return tov_ITOOrchard;
 
+	case 1900:
+		return tov_HBMaizeIntensive;
+	case 1901:
+		return tov_HBMaizeLowInput;
+	case 1902:
+		return tov_HBOrchard;
+	case 1903:
+		return tov_HBFallow;
+	case 1904:
+		return tov_HBAcacia;
+	case 1905:
+		return tov_HBNativeMix;
+	case 1906:
+		return tov_HBRegeneration;
+	case 1907:
+		return tov_HBProtectStrict;
+	case 1908:
+		return tov_HBProtectUse;
     case 9999:
       return tov_Undefined;
     default: // No matching code so we need an error message of some kind
@@ -5038,6 +5066,24 @@ int LE_TypeClass::BackTranslateVegTypes( TTypesOfVegetation VegReference ) {
 		return 1701;
 	case tov_ITOOrchard:
 		return 1702;
+	case tov_HBMaizeIntensive:
+		return 1900;
+	case tov_HBMaizeLowInput:
+		return 1901;
+	case tov_HBOrchard:
+		return 1902;
+	case tov_HBFallow:
+		return 1903;
+	case tov_HBAcacia:
+		return 1904;
+	case tov_HBNativeMix:
+		return 1905;
+	case tov_HBRegeneration:
+		return 1906;
+	case tov_HBProtectStrict:
+		return 1907;
+	case tov_HBProtectUse:
+		return 1908;
     case tov_Undefined:
       return 9999;
     default: // No matching code so we need an error message of some kind
