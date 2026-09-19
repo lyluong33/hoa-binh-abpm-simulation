@@ -63,6 +63,7 @@ using namespace std;
 #include "../Landscape/Map_cfg.h"
 #include "../Landscape/cropprogs/DK_SpringBarley.h"
 #include "../Landscape/cropprogs/DK_WinterWheat.h"
+#include "../Landscape/cropprogs/HB_ScheduledPlan.h"
 #include "Farm.h"
 
 extern std::mt19937 g_generator;
@@ -3621,6 +3622,34 @@ void FarmManager::CreateFarms( const char * a_farmfile )
 			break;
 		case tov_DKWinterWheat:
 			m_cropprogs.push_back(new	DK_WinterWheat(tov_DKWinterWheat, toc_WinterWheat, g_landscape_ptr));
+			break;
+		// Hoa Binh activities: one config-driven plan class (see HB_ScheduledPlan.h)
+		case tov_HBMaizeIntensive:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBMaizeIntensive, toc_Maize, g_landscape_ptr, "HBMaizeIntensive"));
+			break;
+		case tov_HBMaizeLowInput:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBMaizeLowInput, toc_Maize, g_landscape_ptr, "HBMaizeLowInput"));
+			break;
+		case tov_HBOrchard:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBOrchard, toc_OrchardCrop, g_landscape_ptr, "HBOrchard"));
+			break;
+		case tov_HBFallow:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBFallow, toc_SetAside, g_landscape_ptr, "HBFallow"));
+			break;
+		case tov_HBAcacia:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBAcacia, toc_YoungForestCrop, g_landscape_ptr, "HBAcacia"));
+			break;
+		case tov_HBNativeMix:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBNativeMix, toc_YoungForestCrop, g_landscape_ptr, "HBNativeMix"));
+			break;
+		case tov_HBRegeneration:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBRegeneration, toc_YoungForestCrop, g_landscape_ptr, "HBRegeneration"));
+			break;
+		case tov_HBProtectStrict:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBProtectStrict, toc_YoungForestCrop, g_landscape_ptr, "HBProtectStrict"));
+			break;
+		case tov_HBProtectUse:
+			m_cropprogs.push_back(new HB_ScheduledPlan(tov_HBProtectUse, toc_YoungForestCrop, g_landscape_ptr, "HBProtectUse"));
 			break;
 		default:
 			g_msg->Warn(WARN_FILE, "Landscape::CreateFarms(): Missing Cropprog definition for TOV code", to_string(*itr));

@@ -44,6 +44,7 @@ set(COMMON_SOURCES
   Landscape/Weather.cpp
   Landscape/cropprogs/DK_SpringBarley.cpp
   Landscape/cropprogs/DK_WinterWheat.cpp
+  Landscape/cropprogs/HB_ScheduledPlan.cpp
   Skylark/SkylarkAll.cpp
   Skylark/SkylarkConfigs.cpp
   Skylark/Skylarks_toletov.cpp
@@ -79,6 +80,7 @@ set(COMMON_HEADERS
   Landscape/sunset.h
   Landscape/cropprogs/DK_SpringBarley.h
   Landscape/cropprogs/DK_WinterWheat.h
+  Landscape/cropprogs/HB_ScheduledPlan.h
   Skylark/SkylarkAll.h
   Skylark/Skylarks_toletov.h
   SubPopulation/SubPopulation_Population_Manager.h
