@@ -54,6 +54,8 @@ set(COMMON_SOURCES
   Theoretical/Theoretical1_Population_Manager.cpp
   Theoretical/Theoretical2.cpp
   Theoretical/Theoretical2_Population_Manager.cpp
+  HB_PFG/HB_PFG.cpp
+  HB_PFG/HB_PFG_Population_Manager.cpp
 )
 
 set(COMMON_HEADERS
@@ -89,6 +91,8 @@ set(COMMON_HEADERS
   Theoretical/Theoretical1_Population_Manager.h
   Theoretical/Theoretical2.h
   Theoretical/Theoretical2_Population_Manager.h 
+  HB_PFG/HB_PFG.h
+  HB_PFG/HB_PFG_Population_Manager.h
 )
  
 set(CL_SOURCES 

@@ -59,6 +59,7 @@ enum TTypesOfPopulation :int {
 	TOP_Theoretical_2,
 	TOP_Theoretical_3,
 	TOP_Skylark,
+	TOP_HB_PFG,   ///< Hoa Binh plant functional group model
 	TOP_foobar
 };
 //------------------------------------------------------------------------------

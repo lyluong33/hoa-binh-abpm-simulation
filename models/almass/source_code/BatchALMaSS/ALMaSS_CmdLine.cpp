@@ -58,6 +58,8 @@ using namespace std;
 #include "../Theoretical/Theoretical2.h"
 #include "../Theoretical/Theoretical2_Population_Manager.h"
 #include "../Skylark/SkylarkAll.h"
+#include "../HB_PFG/HB_PFG.h"
+#include "../HB_PFG/HB_PFG_Population_Manager.h"
 #include "../Landscape/habitatmap.h"
 
 #define _CRT_SECURE_NO_DEPRECATE
@@ -92,6 +94,8 @@ extern CfgInt cfg_LadybirdAphidPreyIndex;
 void RunTheSim();
 void CloseDownSim();
 bool ReadBatchINI(const char *filename);
+/** \brief Monthly JPEG snapshots of the landscape (Images/ folder); switch off for batch runs. */
+static CfgBool cfg_save_map_images("MAP_SAVE_IMAGES", CFG_CUSTOM, true);
 void SetOutputFiles();
 void GetProbeInput_ini(std::shared_ptr<Population_Manager_Base>, std::string filename);
 bool CreatePopulationManager();
@@ -294,6 +298,10 @@ bool CreatePopulationManager() {
 	std::static_pointer_cast<Skylark_Population_Manager>(g_AManager)->OpenTheBreedingSuccessProbe();
 	std::static_pointer_cast<Skylark_Population_Manager>(g_AManager)->OpenTheFledgelingProbe();
   }
+  else if (g_Species == TOP_HB_PFG) {
+	g_AManager = std::make_shared<HB_PFG_Population_Manager>(g_ALandscape);
+	g_PopulationManagerList.SetPopulation(g_AManager, TOP_HB_PFG);
+  }
   else {
 	  g_msg->Warn("Population_Manager::CreatePopulationManager()  Unknown species number> ", int(g_Species));
 	  exit(0);
@@ -404,6 +412,9 @@ bool ReadBatchINI(const char* filename) {
   case TOP_Skylark:
 	  cout << "Running Skylark" << endl;
 	  break;
+  case TOP_HB_PFG:
+	  cout << "Running Hoa Binh plant functional groups" << endl;
+	  break;
   }
   return true;
 }
@@ -455,7 +466,7 @@ void RunTheSim()
 
 
 		//save images of the landscape
-		if(day==15){
+		if(day==15 && cfg_save_map_images.value()){
 			std::string month_name = g_ALandscape->SupplyMonthName();
 			int year = g_ALandscape->SupplyYear();
 			mapTosave.SaveAllMaps(month_name+"_"+std::to_string(year));
