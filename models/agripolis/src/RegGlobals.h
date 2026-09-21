@@ -28,9 +28,12 @@ enum class SimPhase { INIT, LAND, INVEST, PRODUCT, FUTURE, BETWEEN,ALL };
 enum class DISTRIB_TYPE {UNIFORM, NORMAL};
 
 //static int rndcounter=0;
+namespace ses { class Extension; }
 using namespace std;
 class RegGlobalsInfo {
 public:
+    /// Social-ecological extension (SesExtension.h); nullptr = original AgriPoliS
+    ses::Extension* SES = nullptr;
     //rent-variation
     bool Rent_Variation = false;
     double Beta_min = 0.35;

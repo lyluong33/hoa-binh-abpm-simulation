@@ -169,6 +169,7 @@ RegLpInfo::debug(string filename) {
     out.close();
 }
 
+#include "SesExtension.h"
 static    map <string, int> colindex;
 static    map <string, int> rowindex;
 
@@ -457,7 +458,12 @@ RegLpInfo::Lp(RegProductList* PList, vector<int >& ninv, bool prod, int maxofffa
 	//#else
    
 #ifdef GNU_SOLVER
+	ses::LpView ses_view{obj, lb, ub, rhs, x,
+		[](const std::string& n) { auto f = colindex.find(n); return f == colindex.end() ? -1 : f->second; },
+		[](const std::string& n) { auto f = rowindex.find(n); return f == rowindex.end() ? -1 : f->second; }};
+	if (g->SES) g->SES->BeforeSolve(farm, ses_view);
 	glp_solve();
+	if (g->SES) objval -= g->SES->AfterSolve(farm, ses_view, prod);  // report money income only
 
 	if (stat != GLP_OPT)
 	{

@@ -25,6 +25,8 @@
 #include "OutputControl.h"
 #include "Evaluator.h"
 #include "RegEnvInfo.h"
+#include "SesExtension.h"
+#include <memory>
 /** RegManagerInfo class.
     This class is 'the brain' of the programme. It manages the all necessary
     classes and data flows.
@@ -173,6 +175,8 @@ protected:
     vector <RegInvestObjectInfo >  InvestCatalog;
     /// list of pointers to farms in region
     list   <RegFarmInfo* >   FarmList;
+    /// social-ecological extension (nullptr if <inputdir>/ses.txt is absent)
+    std::shared_ptr<ses::Extension> SesExt;
     /// list of pointers to removed farms
     list   <RegFarmInfo* >   RemovedFarmList;
 

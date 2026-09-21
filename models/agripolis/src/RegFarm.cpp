@@ -823,6 +823,12 @@ void RegFarmInfo::setInitialLand(double* var)   // in ha
 
 void
 RegFarmInfo::closeDown() {
+    // SesExtension NO_EXIT: households keep their land-use rights, whatever the
+    // reason AgriPoliS would close the farm (opportunity cost, liquidity, age).
+    if (g->SES && g->SES->NoExit()) {
+        closed = 0;
+        return;
+    }
     wanted_plot = NULL;
     // ---- FREE ALL PLOTS --------
     list<RegPlotInfo* >::iterator plot=PlotList.begin();

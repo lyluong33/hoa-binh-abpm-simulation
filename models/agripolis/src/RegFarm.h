@@ -21,6 +21,7 @@
 #include "RegGlobals.h"
 #include "RegLabour.h"
 #include "RegPlotInformation.h"
+#include "SesExtension.h"
 /** RegFarmInfo class.
     @short class defines the properties and actions of a single farm.
     @author Kathrin Happe, Alfons Balmann, Konrad Kellermann
@@ -299,7 +300,10 @@ protected:
     RegFarmInfo* obj_backup;
     bool flat_copy;
 
+    /// state of the social-ecological extension (awareness, assets, last plan)
+    ses::FarmState ses_state;
 public:
+    ses::FarmState& sesState() { return ses_state; }
     void set_beta(double );
     double get_beta() const;
 

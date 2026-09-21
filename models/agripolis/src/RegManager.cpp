@@ -259,6 +259,9 @@ void RegManagerInfo::init() {
         Data->printFarmSteads(FarmList);
     }
 
+    SesExt = ses::Extension::Load(g->INPUTFILEdir, g);
+    g->SES = SesExt.get();
+    if (SesExt) SesExt->InitFarms(std::vector<RegFarmInfo*>(FarmList.begin(), FarmList.end()));
     cout << "Initialized " << endl;
 }
 void RegManagerInfo::testLivestockInvRand() {
@@ -1122,6 +1125,7 @@ void RegManagerInfo::step() {
     g->WERTS+=g->WERTS2;
     InvestmentDecision();
     Production();
+    if (SesExt) SesExt->EndOfPeriod(iteration, std::vector<RegFarmInfo*>(FarmList.begin(), FarmList.end()));
 	UpdateSoilserviceP();  
     UpdateMarket();
     FarmPeriodResults();
