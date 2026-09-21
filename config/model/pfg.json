@@ -1,0 +1,28 @@
+{
+  "_description": "Plant functional group (PFG) model. Sensitivities s[action] are the share of occupancy lost per operation of intensity 1, set from growth form and regeneration strategy (annual ruderals regrow from the seed bank; perennial grasses such as Imperata resprout from rhizomes and tolerate fire; shrubs, climbers and tree seedlings are killed by slashing). colonisation and shade_beta are calibrated against the thesis plots (hbabm.pfg_model.calibrate); the values below are the starting priors.",
+  "actions": ["cut", "herbicide", "burn", "sow", "harvest", "clearfell"],
+  "groups": {
+    "ANNUAL":    {"colonisation": 3.0, "extinction": 0.6, "shade_beta": 2.0, "seed_rain": 0.5,
+                  "sensitivity": {"cut": 0.3, "herbicide": 0.9, "burn": 0.4, "sow": 0.3, "harvest": 0.2, "clearfell": 0.3}},
+    "GRASS":     {"colonisation": 1.5, "extinction": 0.3, "shade_beta": 2.0, "seed_rain": 0.5,
+                  "sensitivity": {"cut": 0.2, "herbicide": 0.8, "burn": 0.2, "sow": 0.4, "harvest": 0.2, "clearfell": 0.2}},
+    "FORB_FERN": {"colonisation": 0.8, "extinction": 0.2, "shade_beta": 0.0, "seed_rain": 0.5,
+                  "sensitivity": {"cut": 0.5, "herbicide": 0.9, "burn": 0.7, "sow": 0.6, "harvest": 0.4, "clearfell": 0.6}},
+    "WOODY":     {"colonisation": 0.8, "extinction": 0.2, "shade_beta": 0.5, "seed_rain": 0.5,
+                  "sensitivity": {"cut": 0.7, "herbicide": 0.8, "burn": 0.8, "sow": 0.8, "harvest": 0.5, "clearfell": 0.7}},
+    "TREE":      {"colonisation": 0.5, "extinction": 0.1, "shade_beta": 0.0, "seed_rain": 0.5,
+                  "sensitivity": {"cut": 0.8, "herbicide": 0.9, "burn": 0.9, "sow": 0.9, "harvest": 0.6, "clearfell": 0.8}}
+  },
+  "globals": {"canopy_recovery": 0.2, "t_min": 12.0, "t_opt": 24.0, "rain_half": 30.0},
+  "calibration": {
+    "targets": {
+      "Perrenial cropland": {"ORCHARD": 1.0},
+      "Production forest":  {"ACACIA": 0.3, "NATIVE_MIX": 0.7},
+      "Protection forest":  {"PROTECT_STRICT": 0.64, "PROTECT_USE": 0.36},
+      "No use":             {"FALLOW": 1.0}
+    },
+    "_targets_note": "Mixes follow the survey: 2 of 16 production-forest managers grow acacia monocultures; 64% of the protection-forest mowing records report no cutting (share_not_cut in data/processed/management_by_land_use.csv).",
+    "years": 20,
+    "weather_seed": 7
+  }
+}

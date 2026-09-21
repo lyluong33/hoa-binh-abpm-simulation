@@ -1,0 +1,157 @@
+{
+  "rmse_log_occupancy": 0.10553610929696393,
+  "groups": {
+    "ANNUAL": {
+      "colonisation": 0.6379343189943659,
+      "extinction": 0.6308012920473701,
+      "shade_beta": -0.08172302978620935,
+      "seed_rain": 0.5,
+      "sensitivity": {
+        "cut": 0.013442858365828031,
+        "herbicide": 0.040328575097484096,
+        "burn": 0.017923811154437374,
+        "sow": 0.013442858365828031,
+        "harvest": 0.008961905577218687,
+        "clearfell": 0.013442858365828031
+      }
+    },
+    "GRASS": {
+      "colonisation": 0.19280919292497842,
+      "extinction": 0.31540064602368506,
+      "shade_beta": -0.8612415810016951,
+      "seed_rain": 0.5,
+      "sensitivity": {
+        "cut": 0.008961905577218687,
+        "herbicide": 0.03584762230887475,
+        "burn": 0.008961905577218687,
+        "sow": 0.017923811154437374,
+        "harvest": 0.008961905577218687,
+        "clearfell": 0.008961905577218687
+      }
+    },
+    "FORB_FERN": {
+      "colonisation": 0.157145623645416,
+      "extinction": 0.21026709734912338,
+      "shade_beta": -0.6229453404599286,
+      "seed_rain": 0.5,
+      "sensitivity": {
+        "cut": 0.022404763943046718,
+        "herbicide": 0.040328575097484096,
+        "burn": 0.03136666952026541,
+        "sow": 0.026885716731656063,
+        "harvest": 0.017923811154437374,
+        "clearfell": 0.026885716731656063
+      }
+    },
+    "WOODY": {
+      "colonisation": 0.21020261029699797,
+      "extinction": 0.21026709734912338,
+      "shade_beta": -0.23490217759893012,
+      "seed_rain": 0.5,
+      "sensitivity": {
+        "cut": 0.03136666952026541,
+        "herbicide": 0.03584762230887475,
+        "burn": 0.03584762230887475,
+        "sow": 0.03584762230887475,
+        "harvest": 0.022404763943046718,
+        "clearfell": 0.03136666952026541
+      }
+    },
+    "TREE": {
+      "colonisation": 0.060459041601502284,
+      "extinction": 0.10513354867456169,
+      "shade_beta": -1.2462236745736084,
+      "seed_rain": 0.5,
+      "sensitivity": {
+        "cut": 0.03584762230887475,
+        "herbicide": 0.040328575097484096,
+        "burn": 0.040328575097484096,
+        "sow": 0.040328575097484096,
+        "harvest": 0.026885716731656063,
+        "clearfell": 0.03584762230887475
+      }
+    }
+  },
+  "globals": {
+    "canopy_recovery": 0.2,
+    "t_min": 12.0,
+    "t_opt": 24.0,
+    "rain_half": 30.0
+  },
+  "equilibrium_occupancy": {
+    "MAIZE_INT": {
+      "ANNUAL": 0.045864,
+      "GRASS": 0.016695,
+      "FORB_FERN": 0.008836,
+      "WOODY": 0.012965,
+      "TREE": 0.003031
+    },
+    "MAIZE_LOW": {
+      "ANNUAL": 0.057296,
+      "GRASS": 0.022033,
+      "FORB_FERN": 0.013354,
+      "WOODY": 0.018537,
+      "TREE": 0.004908
+    },
+    "ORCHARD": {
+      "ANNUAL": 0.064472,
+      "GRASS": 0.078683,
+      "FORB_FERN": 0.029881,
+      "WOODY": 0.023828,
+      "TREE": 0.016297
+    },
+    "FALLOW": {
+      "ANNUAL": 0.071974,
+      "GRASS": 0.048619,
+      "FORB_FERN": 0.038253,
+      "WOODY": 0.052094,
+      "TREE": 0.034414
+    },
+    "ACACIA": {
+      "ANNUAL": 0.066509,
+      "GRASS": 0.039993,
+      "FORB_FERN": 0.026535,
+      "WOODY": 0.033979,
+      "TREE": 0.016917
+    },
+    "NATIVE_MIX": {
+      "ANNUAL": 0.074637,
+      "GRASS": 0.080076,
+      "FORB_FERN": 0.050947,
+      "WOODY": 0.053395,
+      "TREE": 0.049067
+    },
+    "REGEN": {
+      "ANNUAL": 0.074118,
+      "GRASS": 0.063118,
+      "FORB_FERN": 0.046185,
+      "WOODY": 0.056204,
+      "TREE": 0.044867
+    },
+    "PROTECT_STRICT": {
+      "ANNUAL": 0.077728,
+      "GRASS": 0.10025,
+      "FORB_FERN": 0.064036,
+      "WOODY": 0.063694,
+      "TREE": 0.073686
+    },
+    "PROTECT_USE": {
+      "ANNUAL": 0.074276,
+      "GRASS": 0.094649,
+      "FORB_FERN": 0.052596,
+      "WOODY": 0.04863,
+      "TREE": 0.048825
+    }
+  },
+  "equilibrium_richness": {
+    "MAIZE_INT": 6.23,
+    "MAIZE_LOW": 8.56,
+    "ORCHARD": 13.58,
+    "FALLOW": 20.36,
+    "ACACIA": 14.33,
+    "NATIVE_MIX": 23.85,
+    "REGEN": 23.1,
+    "PROTECT_STRICT": 29.34,
+    "PROTECT_USE": 23.49
+  }
+}
