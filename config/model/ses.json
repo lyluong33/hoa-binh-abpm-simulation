@@ -1,0 +1,27 @@
+{
+  "_description": "Settings of the AgriPoliS social-ecological extension (models/agripolis/src/SesExtension.*). Values are assumptions to be varied in sensitivity runs unless marked otherwise.",
+  "awareness": {
+    "aw_value_eur_per_ha": 40.0,
+    "_aw_value_note": "Non-market value of stewardship per ha at awareness 1; calibrated so that the baseline keeps the surveyed share of protected/low-input land (see results/calibration).",
+    "social_learning": 0.10,
+    "radius_plots": 40,
+    "feedback": 0.0,
+    "_feedback_note": "Response to the experienced decline of the ALMaSS biodiversity indicator; 0 in uncoupled runs, set by the coupled scenarios.",
+    "decay": 0.05
+  },
+  "no_exit": true,
+  "_no_exit_note": "Households keep their land-use rights (Land Law 2024); AgriPoliS' exit on opportunity cost is switched off.",
+  "change_limits": {
+    "_note": "max_expand: share of the farm's land of that type newly converted per year (scaled by 0.25 + 0.75 x asset index); max_contract: share of the current area that can be given up per year; secure_tenure: expansion only with a land-use certificate.",
+    "MAIZE_INT":      {"max_expand": 1.0,  "max_contract": 1.0,  "secure_tenure": false},
+    "MAIZE_LOW":      {"max_expand": 1.0,  "max_contract": 1.0,  "secure_tenure": false},
+    "ORCHARD":        {"max_expand": 0.10, "max_contract": 0.10, "secure_tenure": true},
+    "FALLOW":         {"max_expand": 1.0,  "max_contract": 1.0,  "secure_tenure": false},
+    "ACACIA":         {"max_expand": 0.15, "max_contract": 0.1667, "secure_tenure": true},
+    "NATIVE_MIX":     {"max_expand": 0.05, "max_contract": 0.04, "secure_tenure": true},
+    "REGEN":          {"max_expand": 1.0,  "max_contract": 1.0,  "secure_tenure": false},
+    "PROTECT_STRICT": {"max_expand": 1.0,  "max_contract": 1.0,  "secure_tenure": false},
+    "PROTECT_USE":    {"max_expand": 1.0,  "max_contract": 1.0,  "secure_tenure": false}
+  },
+  "seed": 2026
+}
