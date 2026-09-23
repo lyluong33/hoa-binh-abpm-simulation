@@ -35,6 +35,9 @@ std::unique_ptr<Extension> Extension::Load(const std::string& a_inputdir, RegGlo
 	ext->ReadAttributes(a_inputdir + "/farm_attributes.txt");
 	ext->m_outdir = a_g->OUTPUTFILE;
 	ext->m_rng.seed(ext->m_settings.seed);
+	ext->m_emulator.Load(a_inputdir + "/emulator.txt");
+	if (ext->m_settings.aw_feedback > 0.0 && !ext->m_emulator.Loaded())
+		Fail("AW_FEEDBACK > 0 needs emulator.txt (two-way coupling)");
 	std::cout << "SesExtension: loaded (" << ext->m_attributes.size() << " farm types, awareness "
 	          << (ext->m_settings.awareness ? "on" : "off") << ")" << std::endl;
 	return ext;
@@ -197,8 +200,25 @@ double Extension::AfterSolve(RegFarmInfo* a_farm, LpView& a_lp, bool a_productio
 }
 
 void Extension::EndOfPeriod(int a_iteration, const std::vector<RegFarmInfo*>& a_farms) {
+	if (m_emulator.Loaded()) {
+		std::map<std::string, double> hectares;
+		for (RegFarmInfo* farm : a_farms)
+			for (const auto& level : farm->sesState().levels) hectares[level.first] += level.second;
+		m_emulator.Step(a_iteration, hectares);
+		m_emulator.Write(m_outdir + "ses_landscape.dat", a_iteration);
+	}
 	WriteOutput(a_iteration, a_farms);
 	if (m_settings.awareness) UpdateAwareness(a_iteration, a_farms);
+}
+
+/** Two-way coupling: experienced loss of the landscape indicator relative to the
+    first period raises awareness (loss aversion: gains have no effect). */
+double Extension::FeedbackTerm(double a_awareness) const {
+	if (m_settings.aw_feedback <= 0.0 || !m_emulator.Loaded()) return 0.0;
+	const double reference = m_emulator.PrimaryReference();
+	if (reference <= 0.0) return 0.0;
+	const double loss = std::max(0.0, (reference - m_emulator.Primary()) / reference);
+	return m_settings.aw_feedback * loss * (1.0 - a_awareness);
 }
 
 void Extension::UpdateAwareness(int a_iteration, const std::vector<RegFarmInfo*>& a_farms) {
@@ -226,7 +246,7 @@ void Extension::UpdateAwareness(int a_iteration, const std::vector<RegFarmInfo*>
 		const double learning = s.aw_social * (neighbours - a);
 		const double extension = state.informed ? s.ext_effect * (1.0 - a) : 0.0;
 		const double decay = s.aw_decay * (a - state.awareness0);
-		next[i] = Clamp01(a + learning + extension - decay);
+		next[i] = Clamp01(a + learning + extension - decay + FeedbackTerm(a));
 	}
 	for (size_t i = 0; i < a_farms.size(); i++)
 		if (a_farms[i]->sesState().active) a_farms[i]->sesState().awareness = next[i];

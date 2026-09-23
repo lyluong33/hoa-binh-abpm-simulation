@@ -12,7 +12,8 @@
 *    perceptions alone, condition which practices households adopt);
 *  - awareness dynamics: social learning from neighbours, an extension
 *    campaign, and - when coupled to ALMaSS - a response to the experienced
-*    decline of the landscape biodiversity indicator (EcoEmulator.h).
+*    decline of the landscape biodiversity indicator (EcoEmulator.h,
+*    AW_FEEDBACK > 0 = two-way coupling; emulator without feedback = one-way).
 * Without <inputdir>/ses.txt the model behaves like the original AgriPoliS.
 **************************************************************************/
 #ifndef SES_EXTENSION_H
@@ -25,6 +26,8 @@
 #include <set>
 #include <string>
 #include <vector>
+
+#include "EcoEmulator.h"
 
 class RegFarmInfo;
 class RegGlobalsInfo;
@@ -100,6 +103,7 @@ private:
 	Extension() = default;
 	Settings m_settings;
 	std::map<std::string, FarmState> m_attributes;   ///< by farm (type) name
+	EcoEmulator m_emulator;                           ///< ALMaSS emulator (optional, emulator.txt)
 	std::string m_outdir;
 	std::mt19937 m_rng;
 
@@ -112,6 +116,7 @@ private:
 	void ApplyLimits(const FarmState& a_state, LpView& a_lp);
 	void KeepHouseholdSolvent(LpView& a_lp);
 	void UpdateAwareness(int a_iteration, const std::vector<RegFarmInfo*>& a_farms);
+	double FeedbackTerm(double a_awareness) const;
 	void WriteOutput(int a_iteration, const std::vector<RegFarmInfo*>& a_farms);
 	void Remember(LpView& a_lp, int a_col);
 };
