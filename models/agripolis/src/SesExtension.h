@@ -70,6 +70,7 @@ struct Settings {
 	double aw_social = 0.0;         ///< learning rate towards neighbours
 	double aw_radius = 10.0;        ///< neighbourhood radius (plots)
 	double aw_feedback = 0.0;       ///< response to biodiversity decline
+	bool local_perception = true;   ///< perceive the own land type (true) or the whole landscape
 	double aw_decay = 0.0;          ///< relaxation towards the initial value
 	double ext_coverage = 0.0;      ///< share of farms reached per period
 	double ext_effect = 0.0;        ///< awareness gain of a reached farm
@@ -116,7 +117,7 @@ private:
 	void ApplyLimits(const FarmState& a_state, LpView& a_lp);
 	void KeepHouseholdSolvent(LpView& a_lp);
 	void UpdateAwareness(int a_iteration, const std::vector<RegFarmInfo*>& a_farms);
-	double FeedbackTerm(double a_awareness) const;
+	double FeedbackTerm(const FarmState& a_state) const;
 	void WriteOutput(int a_iteration, const std::vector<RegFarmInfo*>& a_farms);
 	void Remember(LpView& a_lp, int a_col);
 };

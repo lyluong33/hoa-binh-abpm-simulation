@@ -71,6 +71,7 @@ void Extension::ReadSettings(const std::string& a_file) {
 		} else if (key == "AW_RADIUS") { fields >> s.aw_radius;
 		} else if (key == "AW_FEEDBACK") { fields >> s.aw_feedback;
 		} else if (key == "AW_DECAY") { fields >> s.aw_decay;
+		} else if (key == "PERCEPTION") { std::string v; fields >> v; s.local_perception = (v != "landscape");
 		} else if (key == "EXT_COVERAGE") { fields >> s.ext_coverage;
 		} else if (key == "EXT_EFFECT") { fields >> s.ext_effect;
 		} else if (key == "EXT_START") { fields >> s.ext_start;
@@ -211,14 +212,16 @@ void Extension::EndOfPeriod(int a_iteration, const std::vector<RegFarmInfo*>& a_
 	if (m_settings.awareness) UpdateAwareness(a_iteration, a_farms);
 }
 
-/** Two-way coupling: experienced loss of the landscape indicator relative to the
-    first period raises awareness (loss aversion: gains have no effect). */
-double Extension::FeedbackTerm(double a_awareness) const {
+/** Two-way coupling: the experienced loss of the ecological indicator relative to
+    the first period raises awareness (loss aversion: gains have no effect). With
+    local perception a manager judges the land type he manages (the land type of
+    his surveyed activity), otherwise the whole landscape. */
+double Extension::FeedbackTerm(const FarmState& a_state) const {
 	if (m_settings.aw_feedback <= 0.0 || !m_emulator.Loaded()) return 0.0;
-	const double reference = m_emulator.PrimaryReference();
-	if (reference <= 0.0) return 0.0;
-	const double loss = std::max(0.0, (reference - m_emulator.Primary()) / reference);
-	return m_settings.aw_feedback * loss * (1.0 - a_awareness);
+	auto land = m_settings.land_type_of.find(a_state.initial_activity);
+	const std::string land_row = land == m_settings.land_type_of.end() ? "" : land->second;
+	const double loss = std::max(0.0, m_emulator.PerceivedLoss(land_row, m_settings.local_perception));
+	return m_settings.aw_feedback * loss * (1.0 - a_state.awareness);
 }
 
 void Extension::UpdateAwareness(int a_iteration, const std::vector<RegFarmInfo*>& a_farms) {
@@ -246,7 +249,7 @@ void Extension::UpdateAwareness(int a_iteration, const std::vector<RegFarmInfo*>
 		const double learning = s.aw_social * (neighbours - a);
 		const double extension = state.informed ? s.ext_effect * (1.0 - a) : 0.0;
 		const double decay = s.aw_decay * (a - state.awareness0);
-		next[i] = Clamp01(a + learning + extension - decay + FeedbackTerm(a));
+		next[i] = Clamp01(a + learning + extension - decay + FeedbackTerm(state));
 	}
 	for (size_t i = 0; i < a_farms.size(); i++)
 		if (a_farms[i]->sesState().active) a_farms[i]->sesState().awareness = next[i];

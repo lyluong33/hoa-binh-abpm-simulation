@@ -59,6 +59,12 @@ bool EcoEmulator::Load(const std::string& a_file) {
 			const int out = OutputIndex(output);
 			if (out < 0) Fail("TERM before OUTPUT: " + line);
 			m_outputs[out].terms.push_back(term);
+		} else if (key == "PERCEIVED") {
+			std::string row, name;
+			fields >> row >> name;
+			const int out = OutputIndex(name);
+			if (out < 0) Fail("unknown perceived output " + name);
+			m_perceived[row] = out;
 		} else if (key == "PRIMARY") {
 			std::string name;
 			fields >> name;
@@ -120,6 +126,13 @@ void EcoEmulator::Write(const std::string& a_file, int a_iteration) const {
 }
 
 double EcoEmulator::Primary() const { return m_outputs.at(m_primary).value; }
+
+double EcoEmulator::PerceivedLoss(const std::string& a_land_row, bool a_local) const {
+	auto found = m_perceived.find(a_land_row);
+	const Output& output = m_outputs.at((a_local && found != m_perceived.end()) ? found->second : m_primary);
+	if (output.reference <= 0.0) return 0.0;
+	return (output.reference - output.value) / output.reference;
+}
 double EcoEmulator::PrimaryReference() const { return m_outputs.at(m_primary).reference; }
 
 }  // namespace ses

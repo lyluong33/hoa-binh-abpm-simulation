@@ -11,7 +11,9 @@
 *   ACTIVITY <name> <land_row>
 *   OUTPUT <name> <tau_years>
 *   TERM <output> <coefficient> [<activity> [<activity>]]     (intercept, linear, product)
-*   PRIMARY <output>                                           (indicator used for feedback)
+*   PRIMARY <output>                                           (landscape indicator for feedback)
+*   PERCEIVED <land_row> <output>                              (indicator perceived by the managers
+*                                                               of that land type; optional)
 *
 * Ecological inertia: each indicator relaxes towards its emulated equilibrium,
 *   V_t = V_{t-1} + (V*_t - V_{t-1}) * (1 - exp(-1 / tau)),
@@ -36,6 +38,9 @@ public:
 
 	double Primary() const;           ///< lagged value of the primary indicator
 	double PrimaryReference() const;  ///< its value in the first period
+	/** Relative loss (reference - value) / reference of the indicator perceived on a land type;
+	    the primary indicator if none is declared for it (or if a_local is false). */
+	double PerceivedLoss(const std::string& a_land_row, bool a_local) const;
 	bool Loaded() const { return !m_outputs.empty(); }
 
 private:
@@ -53,6 +58,7 @@ private:
 	std::vector<Output> m_outputs;
 	std::vector<double> m_shares;
 	int m_primary = 0;
+	std::map<std::string, int> m_perceived;   ///< land row -> output index
 	bool m_started = false;
 
 	int ActivityIndex(const std::string& a_name) const;
