@@ -4,6 +4,21 @@
     "alpha": 0.0001,
     "tau": 5.475267896369222
   },
+  "richness_FARMLAND": {
+    "cv_r2": 0.9999328714748125,
+    "alpha": 0.0001,
+    "tau": 6.182145138280902
+  },
+  "richness_PRODUCTION_FOREST": {
+    "cv_r2": 0.9990410309274104,
+    "alpha": 0.0001,
+    "tau": 5.183522463195467
+  },
+  "richness_PROTECTION_FOREST": {
+    "cv_r2": 0.9999195351400825,
+    "alpha": 0.0001,
+    "tau": 5.559686196025503
+  },
   "rd_divergence": {
     "cv_r2": 0.13284866785979565,
     "alpha": 1.0,

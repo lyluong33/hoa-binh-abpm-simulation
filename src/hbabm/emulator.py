@@ -7,7 +7,9 @@
 3. ``collect``: per run the equilibrium indicators (mean of the last years) and
    the relaxation time tau of richness towards its equilibrium.
 4. ``fit`` / ``write_emulator``: ridge-regularised quadratic response surface in
-   the shares (linear + pairwise products), exported as emulator.txt.
+   the shares (linear + pairwise products), exported as emulator.txt. Besides
+   landscape richness, the richness of each land type is emulated: farm agents
+   perceive the ecological state of the land type they manage (PERCEIVED).
 """
 from __future__ import annotations
 
@@ -32,7 +34,8 @@ RUNS_DIR = WORK_DIR / "almass_design"
 ALMASS_BINARY = Path(os.environ.get("HB_ALMASS_BIN", WORK_DIR / "almass_cmd"))
 YEARS = 15
 EQUILIBRIUM_YEARS = 4
-OUTPUTS = ("richness", "rd_divergence", "rd_dissimilarity", "tree_occupancy")
+LAND_RICHNESS = tuple(f"richness_{lt}" for lt in config.LAND_TYPES)
+OUTPUTS = ("richness", *LAND_RICHNESS, "rd_divergence", "rd_dissimilarity", "tree_occupancy")
 
 
 # ---------------------------------------------------------------------------
@@ -134,15 +137,31 @@ def relaxation_time(series: np.ndarray) -> float:
     return float(tau)
 
 
+def patch_land_types(folder: Path) -> pd.Series:
+    """polyref -> land type, via the farm (= activity) that manages each polygon."""
+    poly = pd.read_csv(folder / "hb_polyref.txt", sep="\t", skiprows=2)
+    acts = config.activities()
+    codes = config.activity_codes()
+    fields = poly[poly["FarmRef"] >= 0]
+    return pd.Series([acts[codes[f]].land_type for f in fields["FarmRef"]], index=fields["PolyRefNum"].values)
+
+
 def collect_run(folder: Path) -> dict:
     land = pd.read_csv(folder / "HB_PFG_landscape.txt", sep="\t")
     patches = pd.read_csv(folder / "HB_PFG_patches.txt", sep="\t")
+    patches["land_type"] = patches["polyref"].map(patch_land_types(folder))
+    by_type = patches.groupby(["land_type", "year"])["richness"].mean().unstack(0)
+    per_type = {}
+    for lt in config.LAND_TYPES:
+        series = by_type[lt].values
+        per_type[f"richness_{lt}"] = series[-EQUILIBRIUM_YEARS:].mean()
+        per_type[f"tau_richness_{lt}"] = relaxation_time(series)
     last_years = sorted(patches["year"].unique())[-EQUILIBRIUM_YEARS - 1:]
     diversity = rd.response_diversity(patches[patches["year"].isin(last_years)], list(PFGS))
     tail = land.tail(EQUILIBRIUM_YEARS)
     return {"richness": tail["richness"].mean(), "tree_occupancy": tail["TREE"].mean(),
             "tau_richness": relaxation_time(land["richness"].values),
-            "tau_tree": relaxation_time(land["TREE"].values), **diversity}
+            "tau_tree": relaxation_time(land["TREE"].values), **per_type, **diversity}
 
 
 def collect(frame: pd.DataFrame, runs_dir: Path = RUNS_DIR) -> pd.DataFrame:
@@ -214,6 +233,8 @@ def fit(data: pd.DataFrame) -> dict[str, EmulatorFit]:
     tau_tree = float(np.nanmedian(data["tau_tree"]))
     taus = {"richness": tau_richness, "tree_occupancy": tau_tree,
             "rd_divergence": tau_richness, "rd_dissimilarity": tau_richness}
+    for name in LAND_RICHNESS:
+        taus[name] = float(np.nanmedian(data[f"tau_{name}"]))
     return {o: fit_output(data, o, taus[o]) for o in OUTPUTS}
 
 
@@ -227,4 +248,5 @@ def emulator_lines(fits: dict[str, EmulatorFit], primary: str = "richness") -> l
         lines.append(f"TERM {name} {f.intercept:.8g}")
         lines += [f"TERM {name} {c:.8g} {' '.join(t)}" for t, c in zip(f.terms, f.coefficients)]
     lines.append(f"PRIMARY {primary}")
+    lines += [f"PERCEIVED {lt} richness_{lt}" for lt in config.LAND_TYPES]
     return lines
