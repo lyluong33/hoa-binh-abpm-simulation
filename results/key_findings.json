@@ -1,0 +1,112 @@
+{
+  "q1_uncoupled_vs_oneway": {
+    "S0_BASELINE": {
+      "max_land_use_difference_ha": 0.0,
+      "stewardship_share_change_pct": 0.8641180356327549,
+      "sar_index_change_pct": 0.20589515752030252,
+      "richness_landscape_change_pct": 3.0225287695980985,
+      "richness_farmland_change_pct": 4.816945537841777
+    },
+    "S1_PFES_CARBON": {
+      "max_land_use_difference_ha": 0.0,
+      "stewardship_share_change_pct": 0.8666791456909628,
+      "sar_index_change_pct": 0.2067120159307052,
+      "richness_landscape_change_pct": 3.099426790733295,
+      "richness_farmland_change_pct": 4.8689459064519935
+    },
+    "S2_NATIVE_PLANTING": {
+      "max_land_use_difference_ha": 0.0,
+      "stewardship_share_change_pct": 0.8909473718784477,
+      "sar_index_change_pct": 0.212584304160643,
+      "richness_landscape_change_pct": 3.3324714486714146,
+      "richness_farmland_change_pct": 4.985453061439427
+    },
+    "S3_REGEN_ZONING": {
+      "max_land_use_difference_ha": 0.0,
+      "stewardship_share_change_pct": 0.901793479479096,
+      "sar_index_change_pct": 0.21400789604511772,
+      "richness_landscape_change_pct": 3.5117882315805815,
+      "richness_farmland_change_pct": 5.178973420571076
+    },
+    "S4_MAIZE_PRESSURE": {
+      "max_land_use_difference_ha": 0.0,
+      "stewardship_share_change_pct": 0.6007061931087021,
+      "sar_index_change_pct": 0.21306092780206143,
+      "richness_landscape_change_pct": -1.58127852194615,
+      "richness_farmland_change_pct": -16.214241518674054
+    },
+    "S5_INTEGRATED": {
+      "max_land_use_difference_ha": 0.0,
+      "stewardship_share_change_pct": 0.9966432867367203,
+      "sar_index_change_pct": 0.2281963094225148,
+      "richness_landscape_change_pct": 3.7804276067253895,
+      "richness_farmland_change_pct": 5.382367267413524
+    }
+  },
+  "q2_twoway": {
+    "price_x1.10": {
+      "maize_int_2042_oneway_ha": 22.6588126,
+      "maize_int_2042_twoway_ha": 22.6588126,
+      "maize_int_change_pct": 0.0,
+      "awareness_2042_twoway": 0.6349333896103896,
+      "farmland_richness_2042_oneway": 15.1698,
+      "farmland_richness_2042_twoway": 15.1698
+    },
+    "price_x1.15": {
+      "maize_int_2042_oneway_ha": 50.588035,
+      "maize_int_2042_twoway_ha": 42.378842,
+      "maize_int_change_pct": -16.22753878461577,
+      "awareness_2042_twoway": 0.7255640952380953,
+      "farmland_richness_2042_oneway": 13.7269,
+      "farmland_richness_2042_twoway": 13.8432
+    },
+    "price_x1.20": {
+      "maize_int_2042_oneway_ha": 62.627736,
+      "maize_int_2042_twoway_ha": 55.64542,
+      "maize_int_change_pct": -11.14891970548001,
+      "awareness_2042_twoway": 0.7492854112554114,
+      "farmland_richness_2042_oneway": 13.2803,
+      "farmland_richness_2042_twoway": 13.4227
+    },
+    "price_x1.35": {
+      "maize_int_2042_oneway_ha": 73.265785,
+      "maize_int_2042_twoway_ha": 72.077095,
+      "maize_int_change_pct": -1.6224353564218252,
+      "awareness_2042_twoway": 0.7789573593073593,
+      "farmland_richness_2042_oneway": 12.7289,
+      "farmland_richness_2042_twoway": 12.8321
+    },
+    "perception_scale_price_x1.35": {
+      "awareness_2042_local": 0.7789573593073593,
+      "awareness_2042_landscape": 0.7141167489177489,
+      "maize_int_2042_local": 72.077095,
+      "maize_int_2042_landscape": 73.265785
+    }
+  },
+  "q3_lag": {
+    "price_x1.15": {
+      "awareness_response_year_with_lag": 2036,
+      "awareness_response_year_without_lag": 2033,
+      "land_use_response_year_with_lag": 2036,
+      "land_use_response_year_without_lag": 2033,
+      "observed_minus_committed_farmland_richness_2033": 0.8492999999999995,
+      "year_observed_farmland_richness_peaks": 2030
+    },
+    "price_x1.20": {
+      "awareness_response_year_with_lag": 2035,
+      "awareness_response_year_without_lag": 2033,
+      "land_use_response_year_with_lag": 2034,
+      "land_use_response_year_without_lag": 2032,
+      "observed_minus_committed_farmland_richness_2033": 1.032300000000001,
+      "year_observed_farmland_richness_peaks": 2028
+    },
+    "price_x1.35": {
+      "awareness_response_year_with_lag": 2032,
+      "awareness_response_year_without_lag": 2029,
+      "land_use_response_year_with_lag": 2035,
+      "land_use_response_year_without_lag": 2030,
+      "observed_minus_committed_farmland_richness_2033": 1.2409,
+      "year_observed_farmland_richness_peaks": 2026
+    }
+  }
+}
