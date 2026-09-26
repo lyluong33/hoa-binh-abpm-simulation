@@ -39,6 +39,7 @@ The agents are the land managers surveyed for Luong (2025): households and commu
 - Exchange rate: 29,424 VND/EUR, the 2025 annual average.
 - One-off support: an equal annuity at 8% per year over the support period or the rotation, `A = S * r / (1 - (1 + r)^-n)`.
 - Capital recovery factors: `CRF(6) = 0.21632`, `CRF(20) = 0.10185`, `CRF(25) = 0.09368`.
+- Timing: every scenario pays the `S0_BASELINE` values in 2025, and scenario payments and price shifts start in 2026.
 
 ## Shared assumptions
 
@@ -226,6 +227,8 @@ The Hòa Bình PFES rate is low because the 36 VND/kWh of the Hòa Bình hydropo
 - `REGEN` support: 1,730,000 = 8 M × `CRF(6)` over the 6-year zoning period.
 - `ACACIA` 1,676,000 and `NATIVE_MIX` 726,000: as S0.
 
+Note: the model pays the `REGEN` support in every period; the 6-year limit in `payment_components` is not applied.
+
 ### Eligibility
 
 - Land planned as protection forest or as production natural forest.
@@ -251,6 +254,7 @@ S4 is a market scenario, not a policy. It tests the other scenarios under price 
 - `MAIZE_INT` price multiplier: 1.35, dry grain from 6,200 to 8,400 VND/kg.
 - `MAIZE_LOW` price multiplier: 1.20.
 - Forest payments and support: as S0.
+- Sensitivity runs: both multipliers rescaled so that `MAIZE_INT` takes 1.05, 1.10, 1.15 or 1.20.
 
 ### Mechanism
 
@@ -285,7 +289,7 @@ Note: land types are fixed in the model, so maize cannot expand onto forest land
 ### Extension campaign
 
 - Coverage: 90% of land managers each year from 2026 (`assumption`).
-- Effect: the awareness index (0 to 1) of a reached manager rises by 0.08 per year, up to 1 (`assumption`).
+- Effect: the awareness `a` (0 to 1) of a reached manager rises by `0.08 × (1 - a)` per year (`assumption`).
 - Exposure in the survey: 37 of 40 managers received official planting recommendations, and 87.5% received a forest-protection message.
 - Training in the survey: 1 of 40 managers attended a biodiversity or ecosystem-service training.
 - Content: the value of protection forest, native species, low-clearing cultivation and overlooked services such as pollination and pest control.
@@ -308,7 +312,7 @@ Note: land types are fixed in the model, so maize cannot expand onto forest land
 5. Decree 42/2026: its effect on protection-forest zoning is not confirmed.
 6. Interest support: the rate under Art. 15 is an assumption; the Phú Thọ People's Council sets the actual rate.
 7. Economics: the non-timber values of `REGEN` and `PROTECT_*`, remote orchard yields and native timber prices are assumptions.
-8. Climate: Tiền Phong and Cao Sơn use the Hòa Bình station as a stand-in (`station_assignment`).
+8. Climate: the model uses the Mai Châu station for the whole landscape, including the Đà Bắc communes.
 
 ## Input files
 
@@ -325,19 +329,21 @@ The file holds the market economics of the nine activities per ha per year, in 2
 | `activities` | one object per activity |
 | `summary_net_before_own_labour_vnd_per_ha_yr` | output minus variable cost minus annualised establishment, per activity |
 
-Each activity object has these fields:
+Note: `RegionSettings` in `src/hbabm/agripolis_inputs/region.py` hard-codes the wage as 0.85 EUR per hour (200,000 / 8 / 29,424).
 
-| Field | Content |
-|---|---|
-| `land_type` | `FARMLAND`, `PRODUCTION_FOREST` or `PROTECTION_FOREST` |
-| `output_value_vnd_per_ha_yr` | annualised gross output |
-| `variable_cost_vnd_per_ha_yr` | annualised variable cost |
-| `establishment_cost_annualised_vnd_per_ha_yr` | establishment cost as an 8% annuity over the rotation |
-| `labour_days_per_ha_yr` | annualised labour |
-| `establishment_cost_vnd_per_ha` | one-off establishment cost |
-| `rotation_years`, `years_to_first_income` | rotation length and first year with income |
-| `mature_values`, `yield_ramp`, `cycle_values` | yearly flows before annualisation |
-| `notes`, `sources`, `confidence` | derivation, references and confidence flag |
+`src/hbabm/agripolis_inputs/economics.py` reads five fields of each activity object:
+
+| Field | Content | Read by the model |
+|---|---|---|
+| `land_type` | `FARMLAND`, `PRODUCTION_FOREST` or `PROTECTION_FOREST` | yes |
+| `output_value_vnd_per_ha_yr` | annualised gross output | yes, as the product price |
+| `variable_cost_vnd_per_ha_yr` | annualised variable cost | yes |
+| `establishment_cost_annualised_vnd_per_ha_yr` | establishment cost as an 8% annuity over the rotation | yes, added to the variable cost |
+| `labour_days_per_ha_yr` | annualised labour | yes, at 8 hours per day |
+| `establishment_cost_vnd_per_ha` | one-off establishment cost | no |
+| `rotation_years`, `years_to_first_income` | rotation length and first year with income | no |
+| `mature_values`, `yield_ramp`, `cycle_values` | yearly flows before annualisation | no |
+| `notes`, `sources`, `confidence` | derivation, references and confidence flag | no |
 
 | Activity | Output | Variable cost | Establishment, one-off | Establishment, annuity | Labour days | Rotation (years) | Confidence |
 |---|---|---|---|---|---|---|---|
@@ -364,31 +370,38 @@ Derivations:
 
 | Field | Content |
 |---|---|
-| `vnd_per_eur` | 29,424, the same rate as in `activity_economics.json` |
+| `vnd_per_eur` | 29,424; the model reads the rate from `activity_economics.json` |
 | `global_assumptions` | the shared assumptions, each with `value`, `range`, `basis` and `confidence` |
 | `scenarios` | one object per scenario |
 
-Each scenario object has these fields:
+The model reads six fields of each scenario object:
 
-| Field | Content |
-|---|---|
-| `id` | scenario code |
-| `payments_vnd_per_ha_yr` | recurring expected payment per activity |
-| `annualised_support_vnd_per_ha_yr` | one-off support as an 8% annuity, per activity |
-| `price_multipliers` | output price factor per activity |
-| `phasing` | list of `from_period` and `factor` |
-| `extension_campaign` | `coverage`, `awareness_effect_per_year` and `start_period`, or `null` |
-| `name_en`, `name_vi` | scenario name in English and Vietnamese |
-| `legal_basis` | legal documents with article and URL |
-| `payment_components` | each payment split into components with nominal rate, delivery rate, start period and confidence |
-| `phasing_note`, `extension_campaign_note` | derivation of the phasing factors and of the campaign values |
-| `eligibility` | who qualifies |
-| `conditions_vi`, `mechanism_vi`, `expected_effect_vi` | conditions, mechanism and expected effect, in Vietnamese |
-| `evidence_confidence` | overall confidence flag of the scenario |
+| Field | Content | Read by the model |
+|---|---|---|
+| `id` | scenario code | yes |
+| `payments_vnd_per_ha_yr` | recurring expected payment per activity | yes |
+| `annualised_support_vnd_per_ha_yr` | one-off support as an 8% annuity, per activity | yes |
+| `price_multipliers` | output price factor per activity | yes |
+| `phasing` | list of `from_period` and `factor` | yes |
+| `extension_campaign` | `coverage`, `awareness_effect_per_year` and `start_period`, or `null` | yes |
+| `name_en`, `name_vi` | scenario name in English and Vietnamese | no |
+| `legal_basis` | legal documents with article and URL | no |
+| `payment_components` | each payment split into components with nominal rate, delivery rate, start period and confidence | no |
+| `phasing_note`, `extension_campaign_note` | derivation of the phasing factors and of the campaign values | no |
+| `eligibility` | who qualifies | no |
+| `conditions_vi`, `mechanism_vi`, `expected_effect_vi` | conditions, mechanism and expected effect, in Vietnamese | no |
+| `evidence_confidence` | overall confidence flag of the scenario | no |
 
-- Payment: `payments_vnd_per_ha_yr` plus `annualised_support_vnd_per_ha_yr` is the payment per ha of an activity.
-- Phasing: a `phasing` entry sets the factor from its `from_period` on; the factors scale the `PROTECT_STRICT` total relative to full implementation.
+`src/hbabm/agripolis_inputs/policy.py` turns a scenario into the AgriPoliS file `policy_settings.txt`:
+
+- Premium: each activity receives its payment plus its annualised support, in EUR per ha, as a premium in the yearly optimisation of every agent.
+- Period 1 (2025): every scenario uses the `S0_BASELINE` values.
+- From period 2 (2026): the scenario values apply, times the `phasing` factor in force.
+- Phasing reach: the factor multiplies every payment and support value of the scenario, although the factors come from the `PROTECT_STRICT` totals.
+- Price multipliers: a one-off level shift in period 2 that stays in force.
 - Missing entries: an activity missing from a payment map gets 0, and an activity missing from `price_multipliers` keeps 1.0.
+
+`src/hbabm/scenario_runs.py` passes `extension_campaign` to the social-ecological (SES) extension of AgriPoliS. From `start_period`, each year every agent is reached with probability `coverage`, and the awareness `a` of a reached agent rises by `awareness_effect_per_year × (1 - a)`.
 
 ### `config/research/climate_normals.json`
 
@@ -403,6 +416,8 @@ The file holds the monthly climate normals of the Mai Châu station from QCVN 02
 | `alternate_station` | monthly normals of the Hòa Bình station |
 | `context` | provincial climate summary from Luong (2025) |
 | `source`, `period`, `confidence`, `units` | provenance, averaging period, confidence flag and units |
+
+`src/hbabm/almass_inputs/weather.py` generates the stochastic hourly ALMaSS weather from `monthly`, and `src/hbabm/pfg_model.py` calibrates the plant model on one year of weather generated from the same normals. The model does not read `alternate_station`.
 
 ## References
 

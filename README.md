@@ -22,7 +22,7 @@ The scenario experiment compares the coupling configurations on three questions:
 | ALMaSS | [`models/almass/source_code`](models/almass/source_code) | daily landscape simulation with the `tov_HB*` vegetation types, the `HB_ScheduledPlan` management plan and the `HB_PFG` plant model |
 | `hbabm` | [`src/hbabm`](src/hbabm) | Python pipeline: model inputs, calibration, ALMaSS design runs, emulator fit, scenario runs and analysis |
 
-`EcoEmulator.h` and [`HB_PFG.h`](models/almass/source_code/HB_PFG/HB_PFG.h) state the emulator and plant-model equations in their header comments.
+[`docs/ODD.md`](docs/ODD.md) describes the model following the ODD protocol, and `EcoEmulator.h` and [`HB_PFG.h`](models/almass/source_code/HB_PFG/HB_PFG.h) state the emulator and plant-model equations in their header comments.
 
 ### Land-use activities
 
@@ -116,6 +116,127 @@ PFES is the payment for forest environmental services (chi trả DVMTR). Every s
 | 12 | `S4_MAIZE_PRESSURE` | `oneway`, `twoway`, `twoway_nolag` | `MAIZE_INT` price multiplier 1.05, 1.10, 1.15 or 1.20, with the `MAIZE_LOW` shift rescaled in proportion |
 | 2 | `S0_BASELINE`, `S4_MAIZE_PRESSURE` | `twoway` | managers perceive landscape richness instead of their own land type |
 
+## Results
+
+[`results/`](results) holds the outputs of stages 3 to 6: [`key_findings.json`](results/key_findings.json) with the numbers below, [`summary_2042.csv`](results/summary_2042.csv) with the 2042 land use and indicators of the 24 main runs, [`scenario_results.csv`](results/scenario_results.csv) with the yearly series of all 42 runs, and the figures in [`results/figures/`](results/figures).
+
+### Model fit
+
+| Check | Result | File |
+|---|---|---|
+| `HB_PFG` against the vegetation plots | RMSE of log occupancy 0.106 over 4 land uses and 5 PFGs | [`pfg_calibration.json`](data/generated/pfg_calibration.json) |
+| Emulator, 5-fold cross-validation | R² of 0.999 or more for the four richness indicators and `tree_occupancy`; 0.13 for `rd_divergence` and 0.35 for `rd_dissimilarity` | [`emulator_fit.json`](data/generated/emulator_fit.json) |
+| Emulator against direct ALMaSS runs at the 2042 land use of the six scenarios | error below 0.3% | [`verification_emulator_vs_almass.csv`](results/verification_emulator_vs_almass.csv) |
+| `AW_VALUE` = 150 EUR/ha | first-year activity matches the survey for 30 of 41 managers (73%), against 28 (68%) without awareness | [`calibration_aw_value.csv`](results/calibration_aw_value.csv) |
+
+![Plant-model calibration and relaxation times of the 150 ALMaSS runs](results/figures/fig0_model_fit.png)
+
+### Uncoupled against one-way coupling
+
+- One-way coupling leaves land use unchanged in all six scenarios: the largest difference to `uncoupled` is 0.0 ha.
+- In `S4_MAIZE_PRESSURE`, `MAIZE_INT` grows from 4.2 ha in 2025 to 73.3 ha in 2042 and replaces `MAIZE_LOW`, which falls from 28.9 to 0.0 ha, and `ORCHARD`, which falls from 58.2 to 1.7 ha.
+- The area-based indicators stay flat under this intensification, while the ALMaSS indicators fall:
+
+| Indicator, `S4_MAIZE_PRESSURE` | Configuration | Change 2025 to 2042 |
+|---|---|---|
+| stewardship-area share | `uncoupled` | +0.6% |
+| species-area index | `uncoupled` | +0.2% |
+| landscape richness | `oneway` | -1.6% |
+| farmland richness | `oneway` | -16.2% |
+
+- In `S0_BASELINE`, farmland richness rises by 4.8%, while the stewardship share rises by 0.9% and the species-area index by 0.2%.
+
+![Area-based and process-based indicators in S0_BASELINE and S4_MAIZE_PRESSURE](results/figures/fig1_coupled_vs_uncoupled.png)
+
+### Two-way coupling
+
+`S4_MAIZE_PRESSURE` in 2042 at four maize price levels:
+
+| `MAIZE_INT` price | `MAIZE_INT`, one-way (ha) | `MAIZE_INT`, two-way (ha) | Mean awareness, two-way | Farmland richness, one-way and two-way |
+|---|---|---|---|---|
+| × 1.10 | 22.7 | 22.7 (0%) | 0.63 | 15.17 and 15.17 |
+| × 1.15 | 50.6 | 42.4 (-16%) | 0.73 | 13.73 and 13.84 |
+| × 1.20 | 62.6 | 55.6 (-11%) | 0.75 | 13.28 and 13.42 |
+| × 1.35 | 73.3 | 72.1 (-1.6%) | 0.78 | 12.73 and 12.83 |
+
+- At × 1.10, farmland richness stays above its 2025 value until 2041, so two-way awareness equals one-way awareness in every year.
+- At × 1.35, awareness rises to 0.78, but `MAIZE_INT` falls by only 1.2 ha, because the awareness value `a × AW_VALUE` stays below the income advantage of `MAIZE_INT` over `MAIZE_LOW`.
+- The feedback adds at most 0.14 species to farmland richness in 2042, at × 1.20.
+- At × 1.35, managers who perceive landscape richness instead of their own land type reach awareness 0.71 instead of 0.78 and keep the one-way land use of 73.3 ha.
+- At × 1.35, `AW_FEEDBACK` 1, 3 and 6 give 72.3, 72.1 and 71.1 ha of `MAIZE_INT` and awareness 0.72, 0.78 and 0.81 in 2042. In `S0_BASELINE`, all three give the one-way land use and awareness.
+
+![Intensive maize and farmland richness under one-way and two-way coupling](results/figures/fig2_twoway_pressure.png)
+
+### Ecological lag
+
+- Observed farmland richness keeps rising after the maize price rises in 2026, and peaks in 2030 at × 1.15, in 2028 at × 1.20 and in 2026 at × 1.35 (one-way runs).
+- In 2033, observed farmland richness exceeds the equilibrium committed by the land use of that year by 0.85, 1.03 and 1.24 species at × 1.15, × 1.20 and × 1.35 (two-way runs).
+
+| `MAIZE_INT` price | Awareness responds, with lag / without lag | Land use responds, with lag / without lag |
+|---|---|---|
+| × 1.15 | 2036 / 2033 | 2036 / 2033 |
+| × 1.20 | 2035 / 2033 | 2034 / 2032 |
+| × 1.35 | 2032 / 2029 | 2035 / 2030 |
+
+- The ecological lag delays the social response by 2 to 5 years.
+- Without the lag at × 1.15, `MAIZE_INT` levels off between 36.9 and 39.3 ha from 2034, against 42.4 ha with the lag and 50.6 ha one-way in 2042.
+
+Note: a response year is the first year in which awareness departs from the one-way run by more than 0.01, or `MAIZE_INT` by more than 0.5 ha.
+
+![Observed and committed farmland richness, awareness and intensive maize at maize price × 1.15](results/figures/fig3_lag.png)
+
+### Policy scenarios
+
+Two-way runs in 2042:
+
+| Scenario | `ACACIA` (ha) | `NATIVE_MIX` (ha) | `REGEN` (ha) | Landscape richness | Production-forest richness | Total income against `S0_BASELINE` |
+|---|---|---|---|---|---|---|
+| `S0_BASELINE` | 9.0 | 220.0 | 263.0 | 30.68 | 31.35 | reference |
+| `S1_PFES_CARBON` | 8.7 | 220.7 | 262.7 | 30.70 | 31.39 | +18.4% |
+| `S2_NATIVE_PLANTING` | 6.0 | 232.3 | 253.7 | 30.77 | 31.54 | +2.1% |
+| `S3_REGEN_ZONING` | 5.3 | 189.8 | 296.9 | 30.83 | 31.64 | +19.9% |
+| `S4_MAIZE_PRESSURE` | 9.0 | 220.0 | 263.0 | 29.35 | 30.65 | +2.6% |
+| `S5_INTEGRATED` | 0.2 | 232.2 | 259.6 | 30.91 | 31.81 | +40.5% |
+
+- The forest scenarios raise total income by up to 40.5%, but landscape richness by at most 0.7% over `S0_BASELINE`.
+- `PROTECT_USE` is 0 ha in every run and year, so the higher protection payments of S1, S3 and S5 raise income without changing protection-forest use.
+
+![Land-use shares by land type in 2025 and in 2042](results/figures/fig4_scenarios_land_use.png)
+
+## Limitations
+
+### Baseline
+
+- The 2025 land use is not an equilibrium: in `S0_BASELINE`, `NATIVE_MIX` falls from 386.8 to 220.0 ha and `ACACIA` from 90.5 to 9.0 ha by 2042, while `REGEN` rises from 14.7 to 263.0 ha.
+- 7 surveyed managers, 3 of them community forest groups, report `PROTECT_USE`, but the model puts all protection forest under `PROTECT_STRICT` from 2025.
+- `AW_VALUE` = 150 EUR/ha reproduces the surveyed activity of 30 of the 41 managers.
+
+### Assumptions
+
+- Parameters without a direct estimate: `AW_FEEDBACK`, the weights of the initial awareness index, the change limits, the 50% off-farm availability and the PFG sensitivities to each operation.
+- Every payment is an expected value with an assumed delivery rate, and [`scenario.md`](docs/research/scenario.md#open-uncertainties) lists the open uncertainties of the scenario inputs.
+
+### Vegetation data
+
+- No vegetation plot lies on maize land, so the equilibria of `MAIZE_INT` and `MAIZE_LOW` are extrapolated.
+- The four calibrated land uses have 6 to 15 plots each.
+- Slashing records are aggregated by land use, because their plot numbers do not match the vegetation plots.
+
+### Response diversity
+
+- The emulator reaches a cross-validated R² of 0.13 for `rd_divergence` and 0.35 for `rd_dissimilarity`, so response diversity is reported but not fed back.
+- `rd_dissimilarity` stays below 0.01 in every run and year, which reads as low response diversity.
+
+### Policy inputs
+
+- `S3_REGEN_ZONING` pays the 6-year regeneration support in every period.
+- The forest-carbon payment of S1 and S5 uses the 2023 value of the Thanh Hóa emission-reduction payment pilot (ERPA), not a Hòa Bình rate.
+
+### Landscape
+
+- Landscape and weather are synthetic, and the Mai Châu station stands for all four communes.
+- The emulator uses only the activity shares within each land type, not their spatial arrangement.
+
 ## Repository layout
 
 ```
@@ -123,9 +244,12 @@ config/model/       activity schedules, plant-model priors, SES extension settin
 config/research/    activity economics, climate normals, scenario inputs
 data/processed/     anonymised survey and vegetation-plot data
 data/generated/     plant-model calibration, ALMaSS design runs, emulator
+docs/ODD.md         ODD model description
 docs/research/      scenario definitions and sources
 models/agripolis/   AgriPoliS2020 with SesExtension and EcoEmulator
 models/almass/      ALMaSS with the tov_HB* types, HB_ScheduledPlan and HB_PFG
+results/            scenario results, figures, key findings and verification
+scripts/            model build and full pipeline
 src/hbabm/          Python pipeline
 tests/              pytest suite
 ```
@@ -140,18 +264,11 @@ tests/              pytest suite
 
 ## Build
 
-The two model binaries go into the work directory, `/tmp/hbabm_work` by default:
-
 ```bash
-cmake -S models/agripolis -B build/agripolis -DGLPK_LIBRARY_DIR=/path/to/glpk/lib
-cmake --build build/agripolis -j4
-cmake -S models/almass/source_code -B build/almass -DCMAKE_BUILD_TYPE=Release
-cmake --build build/almass -j4
-mkdir -p /tmp/hbabm_work
-cp build/agripolis/src/agp24 build/almass/almass_cmd /tmp/hbabm_work/
+GLPK_LIBRARY_DIR=/path/to/glpk/lib scripts/build_models.sh
 ```
 
-`GLPK_LIBRARY_DIR` is only needed when GLPK is not installed system-wide.
+[`scripts/build_models.sh`](scripts/build_models.sh) builds both models with CMake and copies `agp24` and `almass_cmd` into the work directory, `$HB_WORK_DIR` or `/tmp/hbabm_work` by default; a first argument overrides the work directory. `GLPK_LIBRARY_DIR` is only needed when GLPK is not installed system-wide.
 
 | Variable | Default | Content |
 |---|---|---|
@@ -163,8 +280,10 @@ cp build/agripolis/src/agp24 build/almass/almass_cmd /tmp/hbabm_work/
 
 ```bash
 pip install numpy pandas scipy matplotlib pytest
-export PYTHONPATH=src
+scripts/run_all.sh
 ```
+
+[`scripts/run_all.sh`](scripts/run_all.sh) runs stages 1 to 6 and the tests, and repeats stages 2, 4 and 6 until they finish. Each stage also runs on its own with `PYTHONPATH=src`:
 
 | Stage | Command | Output |
 |---|---|---|
@@ -186,7 +305,7 @@ export PYTHONPATH=src
 python -m pytest
 ```
 
-The tests check the AgriPoliS and ALMaSS input generators and the response-diversity measures, and need neither model binary.
+The tests check the AgriPoliS and ALMaSS input generators, the response-diversity measures and the analysis and emulator helpers, and need neither model binary.
 
 ## Data
 
@@ -202,6 +321,7 @@ The raw survey data, which hold names, villages and GPS positions, and the anony
 
 ## Documentation
 
+- [`docs/ODD.md`](docs/ODD.md): model description following the ODD protocol (Grimm et al. 2020)
 - [`docs/research/scenario.md`](docs/research/scenario.md): scenario definitions, legal basis, payment derivations and the fields of the three files in `config/research/`
 - [`models/agripolis/README.md`](models/agripolis/README.md): upstream AgriPoliS2020
 - [`models/agripolis/templates/Policy_syntax.txt`](models/agripolis/templates/Policy_syntax.txt), [`Matrix_syntax.txt`](models/agripolis/templates/Matrix_syntax.txt): syntax of the AgriPoliS policy and MIP matrix files
@@ -216,6 +336,7 @@ The raw survey data, which hold names, villages and GPS positions, and the anony
 
 ## References
 
+- Grimm, V. et al. (2020). The ODD protocol for describing agent-based and other simulation models: a second update to improve clarity, replication, and structural realism. Journal of Artificial Societies and Social Simulation 23(2), 7.
 - Luong, T. K. L. (2025). Local ecological knowledge of land managers on functional plant diversity in Hoa Binh province, Vietnam. MSc thesis, KU Leuven.
 - Ross et al. (2023). How to measure response diversity. Methods in Ecology and Evolution.
 - Policy, economic and climate sources: [`docs/research/scenario.md`](docs/research/scenario.md#references)
