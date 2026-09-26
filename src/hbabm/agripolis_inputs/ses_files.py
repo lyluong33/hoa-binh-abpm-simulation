@@ -13,6 +13,7 @@ class SesOptions:
     awareness: bool = True
     aw_value: float | None = None        # None = value from config/model/ses.json
     feedback: float = 0.0
+    perception: str = "local"            # local (own land type) | landscape
     ext_coverage: float = 0.0
     ext_effect: float = 0.0
     ext_start: int = 1 << 30
@@ -27,7 +28,7 @@ def ses_lines(options: SesOptions) -> list[str]:
         "AWARENESS": "true" if options.awareness else "false",
         "AW_VALUE": options.aw_value if options.aw_value is not None else aw["aw_value_eur_per_ha"],
         "AW_SOCIAL": aw["social_learning"], "AW_RADIUS": aw["radius_plots"],
-        "AW_FEEDBACK": options.feedback, "AW_DECAY": aw["decay"],
+        "AW_FEEDBACK": options.feedback, "PERCEPTION": options.perception, "AW_DECAY": aw["decay"],
         "EXT_COVERAGE": options.ext_coverage, "EXT_EFFECT": options.ext_effect, "EXT_START": options.ext_start,
         "NO_EXIT": "true" if spec["no_exit"] else "false",
         "SEED": options.seed if options.seed is not None else spec["seed"],
