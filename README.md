@@ -90,6 +90,12 @@ A manager perceives the land type of their surveyed activity. In two-way runs, o
 | `twoway` | the perceived loss of richness raises awareness, with `AW_FEEDBACK` = 3 |
 | `twoway_nolag` | `twoway` with τ set to 0.01 years |
 
+### Causal loop diagram
+
+![Causal loop diagram of AgriPoliS coupled to the ALMaSS emulator](docs/figures/cld_emulator.png)
+
+B1 is the main balancing loop: intensification lowers richness, the perceived loss raises awareness, and awareness curbs intensification. B2 is the decay loop that pulls awareness back to its survey value. [`scripts/draw_cld.py`](scripts/draw_cld.py) draws the figure.
+
 ## Scenarios
 
 [`docs/research/scenario.md`](docs/research/scenario.md) defines the six scenarios with their legal basis and the derivation of every payment, and [`config/research/scenarios.json`](config/research/scenarios.json) carries their model inputs. Payments are expected values in VND per ha per year, equal to the legal rate times a delivery rate.
@@ -245,6 +251,7 @@ config/research/    activity economics, climate normals, scenario inputs
 data/processed/     anonymised survey and vegetation-plot data
 data/generated/     plant-model calibration, ALMaSS design runs, emulator
 docs/ODD.md         ODD model description
+docs/figures/       causal loop diagram
 docs/research/      scenario definitions and sources
 models/agripolis/   AgriPoliS2020 with SesExtension and EcoEmulator
 models/almass/      ALMaSS with the tov_HB* types, HB_ScheduledPlan and HB_PFG
